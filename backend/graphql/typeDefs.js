@@ -15,6 +15,7 @@ const typeDefs = gql`
     description: String!
     budget: Float!
     status: String!
+    domain:String!
     client: User!
   }
 
@@ -40,13 +41,14 @@ const typeDefs = gql`
     users: [User]
     jobs: [Job]
     proposals(jobId: ID!): [Proposal]
+    getJobs(domain:String):[Job]
     projects: [Project]
   }
 
   type Mutation {
     register(name: String!, email: String!, password: String!, role: String!): User
     login(email: String!, password: String!): User
-    postJob(title: String!, description: String!, budget: Float!): Job
+    postJob(title: String!, description: String!, budget: Float!,domain:String!): Job
     applyJob(jobId: ID!, coverLetter: String!, proposedBudget: Float!): Proposal
     acceptProposal(proposalId: ID!): Project
     updateProjectStatus(projectId: ID!, status: String!): Project

@@ -48,7 +48,18 @@ const resolvers = {
         const result = await pool.query(`SELECT * FROM proposals WHERE "jobId" = $1`, [jobId]);
         return result.rows;
       },
-  
+      getJobs: async (_, { domain }) => {
+        let query = `SELECT * FROM jobs WHERE status = 'open'`;
+        let values = [];
+    
+        if (domain) {
+            query += ` AND domain = $1`;
+            values.push(domain);
+        }
+    
+        const result = await pool.query(query, values);
+        return result.rows;
+    },
       projects: async () => {
         const result = await pool.query("SELECT * FROM projects");
         return result.rows;
@@ -82,12 +93,12 @@ const resolvers = {
         return { ...user, token };
       },
   
-      postJob: async (_, { title, description, budget }, { user }) => {
+      postJob: async (_, { title, description, budget,domain }, { user }) => {
         if (!user || user.role !== "client") throw new Error("Not authorized");
   
         const result = await pool.query(
-          `INSERT INTO jobs ("clientId", title, description, budget) VALUES ($1, $2, $3, $4) RETURNING *`,
-          [user.id, title, description, budget]
+          `INSERT INTO jobs ("clientId", title, description, budget,domain) VALUES ($1, $2, $3, $4,$5) RETURNING *`,
+          [user.id, title, description, budget,domain]
         );
   
         return result.rows[0];
