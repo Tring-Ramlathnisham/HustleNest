@@ -1,0 +1,102 @@
+/* Home Page Styling */
+.home-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 0 10%;
+  background-image: url("../Assets/bg4.jpg");
+  background-size:cover;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+/* Left Section */
+.hero-text {
+  max-width: 500px;
+}
+
+.hero-text h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-text .highlight {
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-text p {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin: 10px 0 20px;
+}
+
+/* CTA Buttons */
+.cta-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn.primary {
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  color: white;
+}
+
+.btn.primary:hover {
+  opacity: 0.9;
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 2px solid #00d4ff;
+  color: #00d4ff;
+}
+
+.btn.secondary:hover {
+  background: #00d4ff;
+  color: #0b0f19;
+}
+
+/* Right Section - Image/Video */
+.hero-image {
+  width: 100%;
+  max-width:550px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow:hidden;
+  background: rgba(255, 255, 255, 0.1);
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+.image-placeholder img{
+  width:100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+

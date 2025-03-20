@@ -64,6 +64,45 @@ const resolvers = {
         const result = await pool.query("SELECT * FROM projects");
         return result.rows;
       },
+
+      getClientDashboardStats:async(_,{clientId})=>{
+        const totalJobs=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"= $1`,[clientId]);
+        const totalProposals=await pool.query(`SELECT COUNT(*) FROM proposals WHERE "jobId" IN (SELECT id FROM jobs WHERE "clientId"=$1)`,[clientId]);
+        const activeProjects=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"=$1 AND status='in progress'`,[clientId]); 
+     
+        return {
+          totalJobs:totalJobs.rows[0].count,
+          totalProposals:totalProposals.rows[0].count,
+          activeProjects:activeProjects.rows[0].count
+        };
+
+      },
+    //   getRecentProposals: async (_, { clientId }) => {
+    //     const proposals = await pool.query(
+    //       `SELECT p.id, p."coverLetter", p."proposedBudget", p.status, 
+    //               u.id AS freelancerId, u.name AS freelancerName, 
+    //               j.id AS jobId, j.title AS jobTitle
+    //        FROM proposals p
+    //        JOIN users u ON p."freelancerId" = u.id
+    //        JOIN jobs j ON p."jobId" = j.id
+    //        WHERE j."clientId" = $1
+    //        ORDER BY p."submittedAt" DESC 
+    //        LIMIT 5`,
+    //       [clientId]
+    //     );
+    
+    //     return proposals.rows.map(row => ({
+    //         id: row.id,
+    //         coverLetter: row.coverLetter,
+    //         proposedBudget: row.proposedBudget,
+    //         status: row.status,
+    //         freelancer: { id: row.freelancerId, name: row.freelancerName },
+    //         job: { id: row.jobId, title: row.jobTitle }
+    //     }));
+    // },
+    
+
+
     },
   
     Mutation: {
@@ -93,17 +132,29 @@ const resolvers = {
         return { ...user, token };
       },
   
-      postJob: async (_, { title, description, budget,domain }, { user }) => {
+      postJob: async (_, { title, description, budget, domain }, { user }) => {
         if (!user || user.role !== "client") throw new Error("Not authorized");
-  
-        const result = await pool.query(
-          `INSERT INTO jobs ("clientId", title, description, budget,domain) VALUES ($1, $2, $3, $4,$5) RETURNING *`,
-          [user.id, title, description, budget,domain]
-        );
-  
-        return result.rows[0];
+      
+        const client = await pool.connect(); // Get a client connection
+        try {
+          await client.query("BEGIN"); // Start transaction
+      
+          const result = await client.query(
+            `INSERT INTO jobs ("clientId", title, description, budget, domain) 
+             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+            [user.id, title, description, budget, domain]
+          );
+      
+          await client.query("COMMIT"); // Commit transaction
+          return result.rows[0];
+        } catch (error) {
+          await client.query("ROLLBACK"); // Rollback transaction on error
+          throw new Error("Failed to post job: " + error.message);
+        } finally {
+          client.release(); // Release client connection
+        }
       },
-  
+      
       applyJob: async (_, { jobId, coverLetter, proposedBudget }, { user }) => {
         if (!user) {
           throw new Error("Authentication required to apply for jobs");

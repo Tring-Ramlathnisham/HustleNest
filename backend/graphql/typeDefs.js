@@ -37,12 +37,19 @@ const typeDefs = gql`
     deadline: String!
   }
 
+  type ClientDashboardStats{
+    totalJobs:Int
+    totalProposals:Int
+    activeProjects:Int
+  }
+
   type Query {
     users: [User]
     jobs: [Job]
     proposals(jobId: ID!): [Proposal]
     getJobs(domain:String):[Job]
     projects: [Project]
+    getClientDashboardStats(clientId: ID!): ClientDashboardStats
   }
 
   type Mutation {
