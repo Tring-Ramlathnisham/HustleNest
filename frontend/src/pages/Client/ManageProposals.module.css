@@ -1,0 +1,60 @@
+.proposalPage {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  .proposalsContainer {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .proposalsHeader {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .proposalsList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .proposalItem {
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .proposalItem:hover {
+    background: #eaf3ff;
+  }
+  
+  .proposalItem p {
+    margin: 0;
+  }
+  
+  .acceptBtn {
+    background: #28a745;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .acceptBtn:hover {
+    background: #218838;
+  }
+  

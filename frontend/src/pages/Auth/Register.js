@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client"; // Import useMutation
 import { register as registerAction } from "../../context/authSlice";
-import "../../styles/Auth.css"; 
+import "./Auth.css"; 
 
 // 🔹 GraphQL mutation for registration
 const REGISTER_MUTATION = gql`
@@ -35,11 +35,11 @@ const Register = () => {
       const { id, name, email, role, token } = data.register;
       console.log("Registration Successful:", { id, name, email, role, token });
 
-      // 🔹 Dispatch register action to Redux
+      // Dispatch register action to Redux
       dispatch(registerAction({ user:{id,email} ,role: role, token:token }));
 
-      // 🔹 Redirect based on role
-      navigate(role === "client" ? "/client-dashboard" : "/freelancer-dashboard");
+      // Redirect based on role
+      navigate(role === "client" ? "/client/dashboard" : "/freelancer/dashboard");
     },
   });
 

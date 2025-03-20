@@ -17,6 +17,8 @@ const typeDefs = gql`
     status: String!
     domain:String!
     client: User!
+    proposalCount:Int!
+
   }
 
   type Proposal {
@@ -38,9 +40,10 @@ const typeDefs = gql`
   }
 
   type ClientDashboardStats{
-    totalJobs:Int
-    totalProposals:Int
-    activeProjects:Int
+    totalJobs:Int!
+    totalProposals:Int!
+    activeProjects:Int!
+    jobs:[Job!]!
   }
 
   type Query {
@@ -50,6 +53,7 @@ const typeDefs = gql`
     getJobs(domain:String):[Job]
     projects: [Project]
     getClientDashboardStats(clientId: ID!): ClientDashboardStats
+    proposal(proposalId:ID!):Proposal
   }
 
   type Mutation {

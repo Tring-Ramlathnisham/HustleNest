@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { gql, useMutation } from "@apollo/client";
-import "../../styles/PostJob.css";
+import "./PostJob.css";
 
 // 🔹 GraphQL Mutation for Posting a Job
 const POST_JOB_MUTATION = gql`

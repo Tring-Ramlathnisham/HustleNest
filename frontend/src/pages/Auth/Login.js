@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { login } from "../../context/authSlice";
-import "../../styles/Auth.css";
+import "./Auth.css";
 
 // 🔹 GraphQL mutation for login
 const LOGIN_MUTATION = gql`
@@ -39,7 +39,7 @@ const Login = () => {
       dispatch(login({ user: { id, email }, token, role }));
 
       // 🔹 Redirect based on role
-      navigate(role === "client" ? "/client-dashboard" : "/freelancer-dashboard");
+      navigate(role === "client" ? "/client/dashboard" : "/freelancer/dashboard");
     },
   });
 

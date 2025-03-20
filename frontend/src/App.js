@@ -9,6 +9,9 @@ import ClientDashboard from "./pages/Client/Dashboard";
 import FreelancerDashboard from "./pages/Freelancer/Dashboard";
 import PrivateRoute from "./routes/PrivateRoute";
 import NavBar from "./components/NavBar"; 
+import PostJob from "./pages/Client/PostJob";
+import ManageProposals from "./pages/Client/ManageProposals";
+import ProposalDetails from "./pages/Client/ProposalDetails";
 
 const App = () => {
 
@@ -31,7 +34,7 @@ const App = () => {
         
         {/* ✅ Private Routes for Authenticated Users */}
         <Route
-          path="/client-dashboard"
+          path="/client/dashboard"
           element={
             <PrivateRoute role="client" userRole={userRole} token={token}>
               <ClientDashboard/>
@@ -39,13 +42,42 @@ const App = () => {
           }
         />
         <Route
-          path="/freelancer-dashboard"
+          path="/freelancer/dashboard"
           element={
             <PrivateRoute role="freelancer" userRole={userRole} token={token}>
               <FreelancerDashboard />
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/client/postJob"
+          element={
+            <PrivateRoute role="client" userRole={userRole} token={token}>
+              <PostJob />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/client/manageProposals/:jobId"
+          element={
+            <PrivateRoute role="client" userRole={userRole} token={token}>
+              <ManageProposals />
+            </PrivateRoute>
+          }
+        />
+
+          
+        <Route
+          path="/client/proposalDetails/:proposalId"
+          element={
+            <PrivateRoute role="client" userRole={userRole} token={token}>
+              <ProposalDetails />
+            </PrivateRoute>
+          }
+        />
+
       </Routes>
     </>
   );

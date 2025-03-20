@@ -1,0 +1,67 @@
+.proposalDetailsPage {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  .detailsContainer {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .detailsHeader {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+  
+  .detailsContent p {
+    margin-bottom: 10px;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .acceptBtn,
+  .rejectBtn,
+  .closeBtn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .acceptBtn {
+    background: #28a745;
+    color: white;
+  }
+  
+  .acceptBtn:hover {
+    background: #218838;
+  }
+  
+  .rejectBtn {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .rejectBtn:hover {
+    background: #c82333;
+  }
+  
+  .closeBtn {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .closeBtn:hover {
+    background: #5a6268;
+  }
+  
