@@ -1,9 +1,9 @@
 /* Home Page Styling */
-.home-container {
+.homeContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100vh;
+  height: 90vh;
   padding: 0 10%;
   background-image: url("../../Assets/bg4.jpg");
   background-size:cover;
@@ -12,35 +12,47 @@
 }
 
 /* Left Section */
-.hero-text {
+.heroText {
   max-width: 500px;
 }
 
-.hero-text h1 {
+.heroText h1 {
   font-size: 2.8rem;
   font-weight: 700;
   line-height: 1.2;
 }
 
-.hero-text .highlight {
+.heroText .highlight {
   background: linear-gradient(90deg, #007bff, #00d4ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.hero-text p {
+.heroText p {
   font-size: 1rem;
   opacity: 0.8;
   margin: 10px 0 20px;
 }
 
 /* CTA Buttons */
-.cta-buttons {
+.ctaButtons {
   display: flex;
   gap: 15px;
 }
 
-.btn {
+/* .btn {
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+} */
+
+.btnPrimary {
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  color: white;
   padding: 12px 20px;
   font-size: 1rem;
   font-weight: 600;
@@ -50,28 +62,29 @@
   transition: all 0.3s ease-in-out;
 }
 
-.btn.primary {
-  background: linear-gradient(90deg, #007bff, #00d4ff);
-  color: white;
-}
-
-.btn.primary:hover {
+.btnPrimary:hover {
   opacity: 0.9;
 }
 
-.btn.secondary {
+.btnSecondary {
   background: transparent;
   border: 2px solid #00d4ff;
   color: #00d4ff;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
 
-.btn.secondary:hover {
+.btnSecondary:hover {
   background: #00d4ff;
   color: #0b0f19;
 }
 
 /* Right Section - Image/Video */
-.hero-image {
+.heroImage {
   width: 100%;
   max-width:550px;
   height: 400px;
@@ -80,7 +93,7 @@
   align-items: center;
 }
 
-.image-placeholder {
+.imagePlaceholder {
   width: 100%;
   height: 100%;
   display: flex;
@@ -93,7 +106,7 @@
   box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
 }
 
-.image-placeholder img{
+.imagePlaceholder img{
   width:100%;
   height: 100%;
   object-fit: cover;

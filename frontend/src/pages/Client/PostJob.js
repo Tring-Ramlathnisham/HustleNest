@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { gql, useMutation } from "@apollo/client";
-import "./PostJob.css";
+import styles from "./PostJob.module.css";
 
 // 🔹 GraphQL Mutation for Posting a Job
 const POST_JOB_MUTATION = gql`
@@ -19,7 +19,7 @@ const POST_JOB_MUTATION = gql`
 
 const PostJob = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { role } = useSelector((state) => state.auth); // Get user role & token from Redux
+  const { role } = useSelector((state) => state.auth); 
 
   const [postJob, { loading, error }] = useMutation(POST_JOB_MUTATION, {
   
@@ -49,25 +49,26 @@ const PostJob = () => {
   };
 
   return (
-    <div className="post-job-container">
+    <div className={styles.postJobPage}>
+    <div className={styles.postJobContainer}>
       <h2>Post a Job</h2>
-      {error && <p className="error-message">{error.message}</p>} {/* 🔹 Display errors */}
+      {error && <p className={styles.errorMessage}>{error.message}</p>}
       
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Job Title */}
         <input type="text" placeholder="Job Title" {...register("title", { required: "Title is required" })} />
-        {errors.title && <p className="error-message">{errors.title.message}</p>}
+        {errors.title && <p className={styles.errorMessage}>{errors.title.message}</p>}
 
         {/* Job Description */}
         <textarea placeholder="Job Description" {...register("description", { required: "Description is required" })}></textarea>
-        {errors.description && <p className="error-message">{errors.description.message}</p>}
+        {errors.description && <p className={styles.errorMessage}>{errors.description.message}</p>}
 
         {/* Budget */}
         <input 
           type="number" step="0.01" placeholder="Budget" 
           {...register("budget", { required: "Budget is required", min: { value: 1, message: "Budget must be at least $1" }})} 
         />
-        {errors.budget && <p className="error-message">{errors.budget.message}</p>}
+        {errors.budget && <p className={styles.errorMessage}>{errors.budget.message}</p>}
 
         {/* Domain Selection */}
         <select {...register("domain", { required: "Please select a domain" })}>
@@ -78,11 +79,11 @@ const PostJob = () => {
           <option value="Digital Marketing">Digital Marketing</option>
           <option value="App Development">App Development</option>
         </select>
-        {errors.domain && <p className="error-message">{errors.domain.message}</p>}
+        {errors.domain && <p className={styles.errorMessage}>{errors.domain.message}</p>}
 
-        {/* Submit Button */}
-        <button type="submit" disabled={loading}>{loading ? "Posting..." : "Post Job"}</button>
+        <button type="submit" className={styles.postButton} disabled={loading}>{loading ? "Posting..." : "Post Job"}</button>
       </form>
+    </div>
     </div>
   );
 };

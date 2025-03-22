@@ -30,35 +30,33 @@
   }
   
   .navLinks li {
-    cursor: pointer;      /* Show pointer on hover */
-    color: white;         /* Default text color */
-    font-size: 16px;     /* Adjust font size */
-    font-weight: 500;    /* Slightly bold */
-    transition: color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    cursor: pointer;      
+    color: white;         
+    font-size: 16px;     
+    font-weight: 500;  
+    transition: color 0.3s ease, transform 0.2s ease; 
   }
   
   .navLinks li a {
-    text-decoration: none; /* Remove default link underline */
-    color: inherit;       /* Inherit color from li */
-    padding: 10px 15px;   /* Add some spacing */
+    text-decoration: none; 
+    color: inherit;      
+    padding: 10px 15px;   
   }
   
   .navLinks li:hover {
-    color:#00eaff ;          /* Change color on hover */
-    text-decoration: none; /* Add underline effect */
-    transform: scale(1.05); /* Slightly enlarge */
+    color:#00eaff ;        
+    text-decoration: none; 
+    transform: scale(1.05); 
   }
   
   .navLinks li:active {
     color:#00eaff;
-    /*transform: scale(0.95); /* Click effect */
   }
   
   /* Logout specific styling */
   .logout {
-    font-weight: bold; /* Make logout stand out */
+    font-weight: bold; 
   }
-
   .logout:hover{
     color: red !important;;
   }

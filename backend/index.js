@@ -9,8 +9,8 @@ import resolvers from "./graphql/resolvers.js";
 dotenv.config();
 
 const app = express();
-app.use(cors({origin:"http://localhost:3000",credentials:true}
-));
+app.use(cors(
+)); //{origin:"http://localhost:3000",credentials:true}
 //  Fix: Ensure context always returns an object
 const createContext = ({ req }) => {
   try {
@@ -26,20 +26,19 @@ const createContext = ({ req }) => {
       return { user: null }; 
     }
 
-    // ✅ Verify token
+    //  Verify token
     const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
     return { user: decodedUser };
   } catch (error) {
     console.error(" Token Verification Failed:", error.message);
-    return { user: null }; // Prevent errors in resolvers
+    return { user: null }; 
   }
 };
 
-// ✅ Ensure context is handled properly
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: createContext, // Use function reference
+  context: createContext, 
 });
 
 async function startServer() {

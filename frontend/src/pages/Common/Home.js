@@ -1,35 +1,34 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Home.css";
+import styles from "./Home.module.css";
 import freelance from "../../Assets/freelance1.jpg"
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="home-container">
+    <div className={styles.homeContainer}>
       {/* Left Section - Text Content */}
-      <div className="hero-text">
+      <div className={styles.heroText}>
         <h1>
-          <span className="highlight">Empower</span> your 
-          <span className="highlight"> Work! </span>Connect,
-          <span className="highlight"> Collaborate, and </span> Succeed!
+          <span className={styles.highlight}>Empower</span> your 
+          <span className={styles.highlight}> Work! </span>Connect,
+          <span className={styles.highlight}> Collaborate, and </span> Succeed!
         </h1>
         <p>
           Unlock endless possibilities with top freelancers and world-class projects. 
           Join our growing community today!
         </p>
-        <div className="cta-buttons">
-          <button className="btn primary" onClick={() => navigate("/register")}>Work as a freelancer</button>
-          <button className="btn secondary" onClick={()=>navigate("/register")}>Hire a freelancer</button>
+        <div className={styles.ctaButtons}>
+          <button className={styles.btnPrimary} onClick={() => navigate("/register")}>Work as a freelancer</button>
+          <button className={styles.btnSecondary} onClick={()=>navigate("/register")}>Hire a freelancer</button>
         </div>
       </div>
 
-      {/* Right Section - Image/Video Placeholder */}
-      <div className="hero-image">
-        <div className="image-placeholder">
+      {/* Right Section - Image Placeholder */}
+      <div className={styles.heroImage}>
+        <div className={styles.imagePlaceholder}>
           <img src={freelance} alt="Freelancer working"/>
-          {/* You can replace this div with an <img> or <video> */}
         </div>
       </div>
     </div>

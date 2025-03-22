@@ -18,7 +18,6 @@ const typeDefs = gql`
     domain:String!
     client: User!
     proposalCount:Int!
-
   }
 
   type Proposal {
@@ -45,7 +44,7 @@ const typeDefs = gql`
     activeProjects:Int!
     jobs:[Job!]!
   }
-
+  
   type Query {
     users: [User]
     jobs: [Job]
@@ -62,6 +61,7 @@ const typeDefs = gql`
     postJob(title: String!, description: String!, budget: Float!,domain:String!): Job
     applyJob(jobId: ID!, coverLetter: String!, proposedBudget: Float!): Proposal
     acceptProposal(proposalId: ID!): Project
+    rejectProposal(proposalId:ID!):Proposal
     updateProjectStatus(projectId: ID!, status: String!): Project
   }
 `;

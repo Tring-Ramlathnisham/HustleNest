@@ -12,6 +12,7 @@ import NavBar from "./components/NavBar";
 import PostJob from "./pages/Client/PostJob";
 import ManageProposals from "./pages/Client/ManageProposals";
 import ProposalDetails from "./pages/Client/ProposalDetails";
+import JobList from "./pages/Client/JobList";
 
 const App = () => {
 
@@ -25,14 +26,14 @@ const App = () => {
 
   return (
     <>
-      {/* ✅ Navbar should always be present */}
+      {/*  Navbar should always be present */}
       <NavBar isLoggedIn={!!token} userRole={userRole} handleLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         
-        {/* ✅ Private Routes for Authenticated Users */}
+        {/*  Private Routes for Authenticated Users */}
         <Route
           path="/client/dashboard"
           element={
@@ -68,6 +69,15 @@ const App = () => {
           }
         />
 
+      <Route
+          path="/client/jobs"
+          element={
+            <PrivateRoute role="client" userRole={userRole} token={token}>
+              <JobList />
+            </PrivateRoute>
+          }
+        />
+
           
         <Route
           path="/client/proposalDetails/:proposalId"
@@ -77,7 +87,6 @@ const App = () => {
             </PrivateRoute>
           }
         />
-
       </Routes>
     </>
   );

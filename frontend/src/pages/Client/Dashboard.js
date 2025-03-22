@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useQuery, gql } from "@apollo/client";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -23,9 +23,10 @@ const GET_CLIENT_STATS = gql`
   }
 `;
 
-const ClientDashboard = ({ onPostJob }) => {
+const ClientDashboard = () => {
   const user = useSelector((state) => state.auth?.user);
   const clientId = user?.id || null;
+  const userName = user?.name;
   const navigate = useNavigate();
 
   const { data, loading, error } = useQuery(GET_CLIENT_STATS, {
@@ -57,9 +58,14 @@ const ClientDashboard = ({ onPostJob }) => {
 
   return (
     <div className={styles.dashboardPage}>
+      {/* Greeting Message */}
+      <h2 className={styles.greeting}>Hello, {userName} </h2>
+
+      {/* Main Container */}
       <div className={styles.dashboardContainer}>
-        {/* Stat Cards */}
-        <div className={styles.statistics}>
+        {/* Dashboard Content */}
+        <div className={styles.statsSection}>
+          {/* Stats Cards */}
           <div className={styles.statsCards}>
             <div className={styles.statCard}>
               <h3>Total Jobs</h3>
@@ -74,33 +80,18 @@ const ClientDashboard = ({ onPostJob }) => {
               <p>{data.getClientDashboardStats.activeProjects}</p>
             </div>
           </div>
-        </div>
 
-        {/* Pie Chart */}
-        <div className={styles.chartContainer}>
-          {chartData && <Pie data={chartData} />}
+          {/* Pie Chart */}
+          <div className={styles.chartContainer}>
+            {chartData && <Pie data={chartData} />}
+          </div>
         </div>
 
         {/* Quick Action Buttons */}
         <div className={styles.quickActions}>
-          <button onClick={()=>navigate("client/postJob")} className={styles.actionBtn}>Post a Job</button>
+          <button onClick={() => navigate("/client/postJob")} className={styles.actionBtn}>Post a Job</button>
           <button onClick={() => navigate("/client/jobs")} className={styles.actionBtn}>View All Jobs</button>
           <button onClick={() => navigate("/client/manageProposals")} className={styles.actionBtn}>Manage Proposals</button>
-        </div>
-
-        {/* Posted Jobs List */}
-        <h3>Posted Jobs</h3>
-        <div className={styles.jobList}>
-          {data.getClientDashboardStats.jobs.map((job) => (
-            <div
-              key={job.id}
-              className={styles.jobCard}
-              onClick={() => navigate(`/client/manageProposals/${job.id}`)}
-            >
-              <h4>{job.title}</h4>
-              <p>Proposals: {job.proposalCount}</p>
-            </div>
-          ))}
         </div>
       </div>
     </div>

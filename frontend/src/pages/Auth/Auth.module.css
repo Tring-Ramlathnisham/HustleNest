@@ -1,18 +1,16 @@
-/* Full-page background with blur effect */
-.auth-page {
+.authPage {
     background: url('../../Assets/Auth.jpg') no-repeat center center/cover;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Glassmorphic Login Container */
-.login-container {
+.loginContainer {
     width: 400px;
     padding: 30px;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.15); /* Glass effect */
+    background: rgba(255, 255, 255, 0.15); 
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
    
     text-align: center;
@@ -20,15 +18,14 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Add a slight hover effect */
-.login-container:hover {
+.loginContainer:hover {
     transform: scale(1.03);
 }
 
-/* Heading */
+
 h2 {
     margin-bottom: 20px;
-    color: white; /* Ensures high contrast */
+    color: white; 
     font-size: 24px;
     font-weight: 600;
 }
@@ -42,19 +39,18 @@ input,select {
     border-radius: 6px;
     font-size: 16px;
     outline: none;
-    background: rgba(255, 255, 255, 0.2); /* Slight transparency */
-    color: white; /* Ensures visibility */
+    background: rgba(255, 255, 255, 0.2); 
+    color: white; 
     font-weight: bold;
     transition: all 0.3s ease-in-out;
     appearance: none;
 }
 
-/* Input placeholder text */
+
 input::placeholder {
-    color: rgba(255, 255, 255, 0.7); /* Light white placeholder */
+    color: rgba(255, 255, 255, 0.7);
 }
 
-/* Input focus effect */
 input:focus ,select:focus {
     background: rgba(255, 255, 255, 0.4);
     box-shadow: 0 0 10px #00eaff99;
@@ -82,8 +78,8 @@ select:focus option {
     color: black;
 }
 
-/* Submit button */
-button {
+
+.authButton {
     width: 50%;
     padding: 12px;
     background: rgb(0, 234, 255); /* Bright blue */
@@ -97,37 +93,36 @@ button {
     transition: all 0.3s ease-in-out;
 }
 
-/* Button hover effect */
-button:hover {
+
+.authButton:hover {
     background: rgb(0, 200, 220);
     transform: translateY(-3px);
 }
 
-/* Button active effect */
-button:active {
+.authButton:active {
     background: rgb(0, 170, 200);
     transform: scale(0.98);
 }
 
 /* Error message */
-.error-message {
+.errorMessage {
     color: red;
     font-size: 14px;
     margin-top: 5px;
 }
 
-.already-account{
+.alreadyAccount{
     color:rgba(255, 255, 255, 0.7); 
 }
 
-.already-account a{
+.alreadyAccount a{
     color: rgb(0, 200, 220);
 }
 
 
 /* Responsive Design */
 @media screen and (max-width: 480px) {
-    .login-container {
+    .loginContainer {
         width: 90%;
         padding: 20px;
     }

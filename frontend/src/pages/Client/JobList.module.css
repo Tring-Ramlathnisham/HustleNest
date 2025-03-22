@@ -1,0 +1,104 @@
+/* Job List Page */
+.jobListPage {
+  background: url("../../Assets/bg4.jpg")no-repeat center center/cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  height:79vh;
+}
+
+/* Title */
+.jobListPage h3 {
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 20px;
+}
+
+/* Job Grid */
+.jobGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 80%;
+  max-width: 1000px;
+}
+
+/* Job Card */
+.jobCard {
+  background:white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.jobCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  transition: 0.3s;
+}
+
+/* .jobCard:hover::before {
+  height: 100%;
+  opacity: 0.4;
+} */
+
+.jobCard h4 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.jobCard p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.proposalCount{
+  color:#00d4ff;
+}
+
+/* Hover Effect */
+.jobCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Back Button */
+.backButton {
+  width: 250px;
+  padding: 12px;
+  margin-top: 30px;
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.backButton:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+}

@@ -4,9 +4,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import { login } from "../../context/authSlice";
-import "./Auth.css";
+import styles from "./Auth.module.css";
 
-// 🔹 GraphQL mutation for login
 const LOGIN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -24,7 +23,6 @@ const Login = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm(); // Form handling
 
-  // 🔹 useMutation hook for login
   const [loginMutation, { loading, error }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       if (!data || !data.login) {
@@ -33,7 +31,7 @@ const Login = () => {
       }
 
       const { id, role, email, token } = data.login;
-      console.log("✅ Login Successful:", { id, email, role, token });
+      console.log(" Login Successful:", { id, email, role, token });
 
       // 🔹 Store token & user details in Redux
       dispatch(login({ user: { id, email }, token, role }));
@@ -57,12 +55,11 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-page">
-      <div className="login-container">
+    <div className={styles.authPage}>
+      <div className={styles.loginContainer}>
         <h2>Login</h2>
-        {error && <p className="error-message">{error.message}</p>}
+        {error && <p className={styles.errorMessage}>{error.message}</p>}
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* Email Field */}
           <input
             type="email"
             placeholder="Email"
@@ -74,9 +71,8 @@ const Login = () => {
               },
             })}
           />
-          {errors.email && <p className="error-message">{errors.email.message}</p>}
+          {errors.email && <p className={styles.errorMessage}>{errors.email.message}</p>}
 
-          {/* Password Field */}
           <input
             type="password"
             placeholder="Password"
@@ -88,9 +84,9 @@ const Login = () => {
               },
             })}
           />
-          {errors.password && <p className="error-message">{errors.password.message}</p>}
+          {errors.password && <p className={styles.errorMessage}>{errors.password.message}</p>}
 
-          <button type="submit" disabled={loading}>
+          <button type="submit"className={styles.authButton} disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
@@ -98,5 +94,6 @@ const Login = () => {
     </div>
   );
 };
+
 
 export default Login;

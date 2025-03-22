@@ -1,60 +1,120 @@
-.proposalPage {
+/* Container */
+.manageProposalsPage{
+  background: url('../../Assets/bg4.jpg') no-repeat center center/cover;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.proposalContainer {
+  background:rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 60%;
+  min-width: 400px;
+  text-align: center;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Title */
+.proposalTitle {
+  font-size: 24px;
+  color:#00eaff;
+  margin-bottom: 20px;
+}
+
+/* No Proposals Message */
+.noProposals {
+  font-size: 18px;
+  color: #6c757d;
+  margin-top: 10px;
+}
+
+/* Proposal List */
+.proposalList {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+/* Individual Proposal Item */
+.proposalItem {
+  background: #f8f9fa;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.proposalItem::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  transition: 0.3s;
+}
+
+.proposalItem:hover {
+  background: #e9ecef;
+  transform: scale(1.02);
+}
+
+/* Proposal Text */
+.proposalText {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Accept Button */
+.acceptBtn {
+  background: #28a745;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.acceptBtn:hover {
+  background: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .proposalContainer {
+    width: 80%;
     padding: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
   }
-  
-  .proposalsContainer {
-    max-width: 800px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .proposalsHeader {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .proposalsList {
-    list-style: none;
-    padding: 0;
-  }
-  
+
   .proposalItem {
-    background: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.3s;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
   }
-  
-  .proposalItem:hover {
-    background: #eaf3ff;
-  }
-  
-  .proposalItem p {
-    margin: 0;
-  }
-  
+
   .acceptBtn {
-    background: #28a745;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
+    width: 100px;
+    padding: 6px;
   }
-  
-  .acceptBtn:hover {
-    background: #218838;
-  }
-  
+}
+
+.errorMessage{
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}

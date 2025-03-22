@@ -202,11 +202,16 @@ const resolvers = {
       if (user.role !== "client") {
           throw new Error(" Unauthorized: Only clients can accept the proposals");
       }
-      const client = await pool.connect(); // Start a database transaction
+      const client = await pool.connect(); 
       try {
-          await client.query("BEGIN"); // Begin transaction
+          await client.query("BEGIN"); 
+
+          const alreadyAccepted=await client.query(
+            ` SELECT * FROM proposals where "jobId"=(Select "jobId" from proposals where id=$1) and status='accepted' ;`,[proposalId]
+          );
+
+          if(alreadyAccepted.rows.length==0){
   
-          //  Retrieve the proposal and associated job details
           const proposalResult = await client.query(`
               SELECT p.*, j."clientId" 
               FROM proposals p
@@ -248,18 +253,66 @@ const resolvers = {
               [proposal.jobId, proposal.freelancerId, proposal.clientId]
           );
   
-          await client.query("COMMIT"); // Commit the transaction
+          await client.query("COMMIT"); 
   
-          return projectResult.rows[0]; // Return the created project
-      } catch (error) {
-          await client.query("ROLLBACK"); // Rollback on error
+          return projectResult.rows[0]; 
+        }
+        else{
+          throw new Error("This job is already assigned to someone else.");
+          }
+        }
+      catch (error) {
+          await client.query("ROLLBACK"); 
           console.error(" Error in acceptProposal:", error);
           throw new Error("Failed to accept the proposal");
       } finally {
-          client.release(); // Release the database connection
+          client.release(); 
       }
   },
   
+  rejectProposal:async(_,{proposalId},{user})=>{
+    if (!user) {
+      throw new Error("Authentication required to accept the proposals");
+    }
+    if (user.role !== "client") {
+        throw new Error(" Unauthorized: Only clients can accept the proposals");
+    }
+    const client = await pool.connect(); 
+    try {
+      await client.query("BEGIN");
+      const proposalResult = await client.query(`
+        SELECT p.*, j."clientId" 
+        FROM proposals p
+        JOIN jobs j ON p."jobId" = j.id
+        WHERE p.id = $1
+    `, [proposalId]);
+
+    const proposal = proposalResult.rows[0];
+
+    if (!proposal) {
+        throw new Error("Proposal not found");
+    }
+    if (proposal.clientId !== user.id) {
+      throw new Error(" Unauthorized: You can only accept proposals for your own jobs");
+    }
+    await client.query(
+      `UPDATE proposals SET status = 'rejected' WHERE id = $1`,
+      [proposalId]
+    );
+    await client.query("COMMIT");
+    const return_result=await client.query(`Select * from proposals where id=$1`,[proposalId]);
+    return return_result.rows[0];
+
+    }
+    catch(error){
+      await client.query("ROLLBACK"); 
+      console.error(" Error in upadte status:", error);
+      throw new Error("Failed to reject the proposal");
+    }
+    finally {
+      client.release(); 
+    }
+  },
   
   updateProjectStatus: async (_, { projectId, status }, { user }) => {
     //  Authentication: Ensure user is logged in

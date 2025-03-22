@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client"; // Import useMutation
 import { register as registerAction } from "../../context/authSlice";
-import "./Auth.css"; 
+import styles from "./Auth.module.css"; 
 
 // 🔹 GraphQL mutation for registration
 const REGISTER_MUTATION = gql`
@@ -53,11 +53,11 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-page"> {/* Uses the same background styling */}
-      <div className="login-container"> {/* Uses the same glassmorphic container */}
+    <div className={styles.authPage}>
+      <div className={styles.loginContainer}>
         <h2>Register</h2>
         
-        {error && <p className="error-message">{error.message}</p>} {/* Error message */}
+        {error && <p className={styles.errorMessage}>{error.message}</p>} {/* Error message */}
         
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Full Name Field */}
@@ -66,7 +66,7 @@ const Register = () => {
             placeholder="Full Name" 
             {...formRegister("name", { required: "Full Name is required" })} 
           />
-          {errors.name && <p className="error-message">{errors.name.message}</p>}
+          {errors.name && <p className={styles.errorMessage}>{errors.name.message}</p>}
 
           {/* Email Field */}
           <input 
@@ -77,7 +77,7 @@ const Register = () => {
               pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email format" }
             })} 
           />
-          {errors.email && <p className="error-message">{errors.email.message}</p>}
+          {errors.email && <p className={styles.errorMessage}>{errors.email.message}</p>}
 
           {/* Password Field */}
           <input 
@@ -88,7 +88,7 @@ const Register = () => {
               minLength: { value: 6, message: "Password must be at least 6 characters" }
             })} 
           />
-          {errors.password && <p className="error-message">{errors.password.message}</p>}
+          {errors.password && <p className={styles.errorMessage}>{errors.password.message}</p>}
 
           {/* Role Selection */}
           <select {...formRegister("role", { required: "Role is required" })}>
@@ -96,15 +96,15 @@ const Register = () => {
             <option value="client">Client</option>
             <option value="freelancer">Freelancer</option>
           </select>
-          {errors.role && <p className="error-message">{errors.role.message}</p>}
+          {errors.role && <p className={styles.errorMessage}>{errors.role.message}</p>}
 
           {/* Submit Button */}
-          <button type="submit" disabled={loading}>
+          <button type="submit" className={styles.authButton} disabled={loading}>
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
 
-        <p className="already-account">Already have an account? <a href="/login">Login</a></p>
+        <p className={styles.alreadyAccount}>Already have an account? <a href="/login">Login</a></p>
       </div>
     </div>
   );
