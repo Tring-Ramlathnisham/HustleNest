@@ -26,7 +26,7 @@ const GET_CLIENT_STATS = gql`
 const ClientDashboard = () => {
   const user = useSelector((state) => state.auth?.user);
   const clientId = user?.id || null;
-  const userName = user?.name;
+  // const userName = user?.name;
   const navigate = useNavigate();
 
   const { data, loading, error } = useQuery(GET_CLIENT_STATS, {
@@ -60,7 +60,7 @@ const ClientDashboard = () => {
   return (
     <div className={styles.dashboardPage}>
       {/* Greeting Message */}
-      <h2 className={styles.greeting}>Hello, {userName} </h2>
+      {/* <h2 className={styles.greeting}>Hello, {userName} </h2> */}
 
       {/* Main Container */}
       <div className={styles.dashboardContainer}>
@@ -92,7 +92,7 @@ const ClientDashboard = () => {
         <div className={styles.quickActions}>
           <button onClick={() => navigate("/client/postJob")} className={styles.actionBtn}>Post a Job</button>
           <button onClick={() => navigate("/client/jobs")} className={styles.actionBtn}>View All Jobs</button>
-          <button onClick={() => navigate("/client/manageProposals")} className={styles.actionBtn}>Manage Proposals</button>
+          <button onClick={() => navigate("/client/jobs")} className={styles.actionBtn}>Manage Proposals</button>
         </div>
       </div>
     </div>

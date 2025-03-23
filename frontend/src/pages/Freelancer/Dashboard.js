@@ -65,10 +65,10 @@ const FreelancerDashboard = () => {
           <button className={styles.actionBtn} onClick={() => navigate("/freelancer/jobs")}>
             Browse Jobs
           </button>
-          <button className={styles.actionBtn} onClick={() => navigate("/my-applications")}>
+          <button className={styles.actionBtn} onClick={() => navigate("/freelancer/applications")}>
             View My Applications
           </button>
-          <button className={styles.actionBtn} onClick={() => navigate("/my-projects")}>
+          <button className={styles.actionBtn} onClick={() => navigate("/freelancer/myProjects")}>
             My Projects
           </button>
         </div>

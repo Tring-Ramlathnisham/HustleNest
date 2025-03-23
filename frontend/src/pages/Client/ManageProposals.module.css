@@ -46,7 +46,7 @@
 /* Individual Proposal Item */
 .proposalItem {
   position: relative;
-  background: #f8f9fa;
+  background: rgba(0, 0, 0, 0.2);
   padding: 15px;
   margin: 10px 0;
   border-radius: 8px;
@@ -55,8 +55,9 @@
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  box-shadow: 0px 10px 15px rgb(0, 212, 255,0.5);
 }
- 
+/*  
 .proposalItem::before {
   content: "";
   position: absolute;
@@ -67,7 +68,7 @@
   border-radius: 8px;
   background: linear-gradient(90deg, #007bff, #00d4ff);
   transition: 0.3s;
-}
+} */
 
 .proposalItem:hover {
   transform: scale(1.02);

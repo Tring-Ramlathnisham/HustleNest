@@ -15,6 +15,8 @@ import ProposalDetails from "./pages/Client/ProposalDetails";
 import JobList from "./pages/Client/JobList";
 import BrowseJobs from "./pages/Freelancer/BrowseJobs";
 import ApplyJob from "./pages/Freelancer/ApplyJob";
+import Applications from "./pages/Freelancer/Applications";
+import Projects from "./pages/Freelancer/Projects";
 
 const App = () => {
 
@@ -101,6 +103,8 @@ const App = () => {
           }
          />
 
+         {/* Apply a job*/}
+
         <Route
           path="/freelancer/applyJob/:jobId"
           element={
@@ -109,6 +113,30 @@ const App = () => {
             </PrivateRoute>
           }
          />
+
+         {/* Applications of a freelancer*/}
+
+        <Route
+          path="/freelancer/applications"
+          element={
+            <PrivateRoute role="freelancer" userRole={userRole} token={token}>
+              <Applications/>
+            </PrivateRoute>
+          }
+         />
+
+         {/* Projects of a freelancer*/}
+
+         <Route
+          path="/freelancer/myProjects"
+          element={
+            <PrivateRoute role="freelancer" userRole={userRole} token={token}>
+              <Projects/>
+            </PrivateRoute>
+          }
+         />
+
+
       </Routes>
     </>
   );

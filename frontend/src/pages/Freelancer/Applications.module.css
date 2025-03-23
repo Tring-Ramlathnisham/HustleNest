@@ -1,0 +1,78 @@
+.appliedJobsPage {
+    background: url("../../Assets/bg4.jpg") no-repeat center center/cover;
+    padding: 40px 20px;
+    text-align: center;
+    min-height:79vh;
+}
+
+.heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color:#00d4ff;
+}
+
+.jobGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.jobCard {
+    background:  rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgb(0, 212, 255,0.5);
+    transition: transform 0.2s ease-in-out;
+    text-align: center;
+    cursor: pointer;
+}
+
+.jobCard:hover {
+    transform: translateY(-5px);
+}
+
+.jobCard h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #00d4ff;
+}
+
+.jobCard p {
+    margin: 5px 0;
+    color: whitesmoke;
+    font-size: 14px;
+}
+
+.noJobs {
+    font-size: 16px;
+    color: #999;
+    margin-top: 20px;
+}
+
+.backButton{
+    width: 250px;
+    padding: 12px;
+    margin-top: 30px;
+    background: linear-gradient(90deg, #007bff, #00d4ff);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-left:auto;
+    margin-right: auto;
+  }
+  
+  .backButton:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+  }

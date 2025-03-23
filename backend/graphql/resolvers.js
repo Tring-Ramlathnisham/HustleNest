@@ -21,13 +21,13 @@ const fetchUserById = async (userId) => {
     try {
         const result = await pool.query(`SELECT * FROM users WHERE id=$1`, [userId]);
         if (result.rows.length === 0) {
-            console.error(`Error: No freelancer found for freelancer ID: ${userId}`);
-            throw new Error("Freelancer not found");
+            console.error(`Error: No user found for user ID: ${userId}`);
+            throw new Error("User not found");
         }
         return result.rows[0];
     } catch (error) {
-        console.error("Error fetching freelancer:", error);
-        throw new Error("Internal Server Error while fetching freelancer");
+        console.error("Error fetching user:", error);
+        throw new Error("Internal Server Error while fetching user");
     }
 };
 
@@ -133,8 +133,91 @@ const resolvers = {
         }
       
       },
+      getAppliedJobs: async (_, { freelancerId }) => {
+        try {
+          // console.log("Fetching applied jobs for freelancerId:", freelancerId);
+      
+          if (!freelancerId) {
+            throw new Error("Freelancer ID is missing");
+          }
+      
+          const getAppliedJobs = await pool.query(`
+            SELECT 
+              j.id AS "jobId", 
+              j.title, 
+              j.domain,  
+              u.name AS "clientName",
+              p.status AS "status"
+            FROM proposals p
+            JOIN jobs j ON j.id = p."jobId"
+            JOIN users u ON u.id = j."clientId"
+            WHERE p."freelancerId" = $1;
+          `, [freelancerId]);
+      
+          // console.log("DB Result:", getAppliedJobs.rows);
+      
+          // If no applied jobs found, return an empty array
+          if (getAppliedJobs.rows.length === 0) {
+            console.log("No applied jobs found for this freelancer.");
+            return [];
+          }
+      
+          return getAppliedJobs.rows.map(row => ({
+            id: row.jobId,  
+            job: {
+              id: row.jobId,
+              title: row.title,
+              domain: row.domain
+            },
+            clientName:  row.clientName,
+            status:row.status
+          }));
+      
+        } catch (error) {
+          console.error(" Error fetching applied jobs:", error.message);
+          throw new Error("Failed to fetch applied jobs");
+        }
+      },
 
-
+      getAcceptedProjects: async (_, { freelancerId }) => {
+        try {
+          console.log("Fetching accepted projects for freelancerId:", freelancerId);
+      
+          if (!freelancerId) {
+            throw new Error("Freelancer ID is missing");
+          }
+      
+          const acceptedProjects = await pool.query(`
+            SELECT 
+              j.id AS "jobId", 
+              j.title, 
+              j.domain,  
+              u.name AS "clientName"
+            FROM proposals p
+            JOIN jobs j ON j.id = p."jobId"
+            JOIN users u ON u.id = j."clientId"
+            WHERE p."freelancerId" = $1 AND p.status = 'accepted';
+          `, [freelancerId]);
+      
+          console.log("DB Result:", acceptedProjects.rows);
+      
+          return acceptedProjects.rows.map(row => ({
+            id: row.jobId,
+            job: {
+              id: row.jobId,
+              title: row.title,
+              domain: row.domain
+            },
+            clientName: row.clientName
+          }));
+      
+        } catch (error) {
+          console.error("Error fetching accepted projects:", error.message);
+          throw new Error("Failed to fetch accepted projects");
+        }
+      },
+      
+      
     },
   
     Mutation: {

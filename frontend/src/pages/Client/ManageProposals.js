@@ -51,7 +51,7 @@ const ManageProposals = () => {
           <ul className={styles.proposalList}>
             {data.proposals.map((proposal) => (
               <li key={proposal.id} className={styles.proposalItem} onClick={()=>navigate(`/client/proposalDetails/${proposal.id}`)}>
-                <p><strong>{proposal.freelancer.name}</strong> - ${proposal.proposedBudget}</p>
+                <p className={styles.proposalText}><strong>{proposal.freelancer.name}</strong> - ${proposal.proposedBudget}</p>
                 
                 <ProposalActions
                   proposalId={proposal.id}
