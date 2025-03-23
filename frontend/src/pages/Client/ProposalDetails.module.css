@@ -46,31 +46,33 @@
 /* Buttons */
 .buttonGroup {
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .button {
   font-size: 16px;
   font-weight: bold;
-  padding: 10px 15px;
+  padding: 12px 18px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
-  width: 120px;
+  text-align: center;
+  width: 140px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Close Button */
 .closeBtn {
-  background: #6c757d;
+  background: linear-gradient(135deg, #6c757d, #5a6268);
   color: white;
 }
 
 .closeBtn:hover {
-  background: #5a6268;
+  background: linear-gradient(135deg, #5a6268, #495057);
   transform: scale(1.05);
-}
+} 
 
 /* Accept Button */
 .acceptBtn {

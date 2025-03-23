@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { gql, useMutation } from "@apollo/client";
 import styles from "./PostJob.module.css";
+import { useNavigate } from "react-router-dom";
 
 // 🔹 GraphQL Mutation for Posting a Job
 const POST_JOB_MUTATION = gql`
@@ -16,26 +17,37 @@ const POST_JOB_MUTATION = gql`
     }
   }
 `;
+const GET_CLIENT_STATS = gql`
+  query GetClientDashboardStats($clientId: ID!) {
+    getClientDashboardStats(clientId: $clientId) {
+      totalJobs
+      totalProposals
+      activeProjects
+      jobs {
+        id
+        title
+        proposalCount
+      }
+    }
+  }
+`;
 
 const PostJob = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { role } = useSelector((state) => state.auth); 
+  const { user } = useSelector((state) => state.auth?.user);
+  const clientId=user?.id|| null;
+  const navigate =useNavigate();
 
-  const [postJob, { loading, error }] = useMutation(POST_JOB_MUTATION, {
-  
-    onCompleted: (data) => {
-      if (data && data.postJob) {
-        alert("Job Posted Successfully!");
-      }
-    },
+  const [postJob, { loading, error }] = useMutation(POST_JOB_MUTATION,{
+    refetchQueries:[{query:GET_CLIENT_STATS,variables:{clientId:clientId.toString()}}]
   });
 
-  const onSubmit = async (formData) => {
-    if (role !== "client") {
-      alert("Only clients can post jobs!");
-      return;
-    }
 
+  const onSubmit = async (formData) => {
+    // if (role !== "client") {
+    //   alert("Only clients can post jobs!");
+    //   return;
+    // }
     try {
       await postJob({
         variables: { 
@@ -43,6 +55,8 @@ const PostJob = () => {
           budget: parseFloat(formData.budget) 
         }
       });
+      alert("Job Posted Successfully!");
+      navigate(-1);
     } catch (err) {
       console.error("Error posting job:", err.message);
     }

@@ -17,11 +17,11 @@ const fetchJobById = async (jobId) => {
     }
 };
 
-const fetchFreelancerById = async (freelancerId) => {
+const fetchUserById = async (userId) => {
     try {
-        const result = await pool.query(`SELECT * FROM users WHERE id=$1`, [freelancerId]);
+        const result = await pool.query(`SELECT * FROM users WHERE id=$1`, [userId]);
         if (result.rows.length === 0) {
-            console.error(`Error: No freelancer found for freelancer ID: ${freelancerId}`);
+            console.error(`Error: No freelancer found for freelancer ID: ${userId}`);
             throw new Error("Freelancer not found");
         }
         return result.rows[0];
@@ -40,7 +40,7 @@ const resolvers = {
       },
   
       jobs: async () => {
-        const result = await pool.query("SELECT * FROM jobs");
+        const result = await pool.query("SELECT * FROM jobs where status='open'");
         return result.rows;
       },
   
@@ -68,9 +68,14 @@ const resolvers = {
       getClientDashboardStats:async(_,{clientId})=>{
 
         try{
+          //console.log("fetching client id in resolver:",clientId);
         const totalJobs=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"= $1`,[clientId]);
+
+       // console.log("Total jobs:",totalJobs.rows[0]);
         const totalProposals=await pool.query(`SELECT COUNT(*) FROM proposals WHERE "jobId" IN (SELECT id FROM jobs WHERE "clientId"=$1)`,[clientId]);
+       // console.log("Total proposals:",totalProposals.rows[0]);
         const activeProjects=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"=$1 AND status='in progress'`,[clientId]); 
+        //console.log("Active projects:",activeProjects.rows[0]);
         const jobs=await pool.query(
           `SELECT j.id,j.title,(SELECT COUNT(*) FROM proposals p WHERE p."jobId"=j.id) AS "proposalCount"
            FROM jobs j
@@ -107,6 +112,26 @@ const resolvers = {
           console.error(error);
           throw new Error("Failed to fetch proposal details");
         }
+      },
+
+      getFreelancerDashboardStats:async(_,{freelancerId})=>{
+
+        try{
+          const totalJobsApplied=await pool.query(`select count(*) from proposals where "freelancerId"=$1`,[freelancerId]);
+          const totalProposalsPending=await pool.query(`select count(*) from proposals where "freelancerId"=$1 and status='pending'`,[freelancerId]);
+          const totalProjectsAccepted=await pool.query(`select count(*) from proposals where "freelancerId"=$1 and status='accepted'`,[freelancerId]);
+
+          return {
+            totalJobsApplied:parseInt(totalJobsApplied.rows[0].count),
+            totalProposalsPending:parseInt(totalProposalsPending.rows[0].count),
+            totalProjectsAccepted:parseInt(totalProjectsAccepted.rows[0].count),
+          };
+        }
+        catch(error){
+          console.error("Error fetching freelancer dashboard statistics:",error);
+          throw new Error("Failed to fetch freelancer dashboard statistics");
+        }
+      
       },
 
 
@@ -184,7 +209,6 @@ const resolvers = {
             }
     
             const proposal = result.rows[0];
-            console.log("Inserted Proposal:", proposal);
     
             return proposal;
         } catch (error) {
@@ -372,18 +396,19 @@ const resolvers = {
 
     Proposal:{
        job:(parent)=>fetchJobById(parent.jobId),
-       freelancer:(parent)=>fetchFreelancerById(parent.freelancerId),
+       freelancer:(parent)=>fetchUserById(parent.freelancerId),
     },
     Project:{
         job:(parent)=>fetchJobById(parent.jobId),
-        freelancer:(parent)=>fetchFreelancerById(parent.freelancerId),
+        freelancer:(parent)=>fetchUserById(parent.freelancerId),
     },
     Job:{
       proposalCount:async(parent)=>{
         const result=await pool.query(`Select Count(*) from proposals where "jobId"=$1`,[parent.id]);
         return parseInt(result.rows[0].count,10);
-      }
-    }
+      },
+      client:(parent)=>fetchUserById(parent.clientId),
+    },
       
   };
   

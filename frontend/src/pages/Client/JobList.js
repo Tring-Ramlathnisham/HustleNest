@@ -23,6 +23,7 @@ const JobList = () => {
   const navigate = useNavigate();
   const { data, loading, error } = useQuery(GET_CLIENT_JOBS, {
     variables: { clientId: clientId},
+    fetchPolicy:"network-only",
   });
 
   if (loading) return <p>Loading jobs...</p>;

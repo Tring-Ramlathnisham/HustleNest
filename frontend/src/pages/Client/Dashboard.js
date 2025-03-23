@@ -31,6 +31,7 @@ const ClientDashboard = () => {
 
   const { data, loading, error } = useQuery(GET_CLIENT_STATS, {
     variables: clientId ? { clientId: clientId.toString() } : null,
+    fetchPolicy:"network-only",
   });
 
   const [chartData, setChartData] = useState(null);

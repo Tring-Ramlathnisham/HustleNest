@@ -1,0 +1,99 @@
+/* Apply Job Page */
+.applyJobPage {
+    background: url("../../Assets/bg4.jpg") no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    height: 79vh;
+  }
+  
+  /* Title */
+  .applyJobPage h3 {
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(0, 212, 255);
+    margin-bottom: 20px;
+  }
+  
+  /* Form */
+  .applyForm {
+    background:rgba(0, 0, 0, 0.15);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 10px rgb(0, 212, 255,0.5);
+    width: 90%;
+    max-width: 450px;
+    text-align: left;
+  }
+  
+  .applyForm label {
+    font-size: 16px;
+    font-weight: 600;
+    color: whitesmoke;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .inputField {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    outline: none;
+  }
+  
+  .inputField:focus {
+    border-color: #00d4ff;
+    box-shadow: 0 0 5px rgba(0, 212, 255, 0.5);
+  }
+  
+  /* Error Message */
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  /* Submit Button */
+  .submitButton {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #007bff, #00d4ff);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .submitButton:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Back Button */
+  .backButton {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #ccc;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .backButton:hover {
+    background: #999;
+  }
+  

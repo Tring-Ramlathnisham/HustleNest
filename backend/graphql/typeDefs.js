@@ -44,6 +44,12 @@ const typeDefs = gql`
     activeProjects:Int!
     jobs:[Job!]!
   }
+
+  type FreelancerDashboardStats{
+    totalJobsApplied:Int!
+    totalProposalsPending:Int!
+    totalProjectsAccepted:Int!
+  }
   
   type Query {
     users: [User]
@@ -53,6 +59,7 @@ const typeDefs = gql`
     projects: [Project]
     getClientDashboardStats(clientId: ID!): ClientDashboardStats
     proposal(proposalId:ID!):Proposal
+    getFreelancerDashboardStats(freelancerId:ID!):FreelancerDashboardStats
   }
 
   type Mutation {

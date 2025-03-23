@@ -13,6 +13,8 @@ import PostJob from "./pages/Client/PostJob";
 import ManageProposals from "./pages/Client/ManageProposals";
 import ProposalDetails from "./pages/Client/ProposalDetails";
 import JobList from "./pages/Client/JobList";
+import BrowseJobs from "./pages/Freelancer/BrowseJobs";
+import ApplyJob from "./pages/Freelancer/ApplyJob";
 
 const App = () => {
 
@@ -76,7 +78,7 @@ const App = () => {
               <JobList />
             </PrivateRoute>
           }
-        />
+      />
 
           
         <Route
@@ -87,6 +89,26 @@ const App = () => {
             </PrivateRoute>
           }
         />
+
+      {/* Freelancer routes*/}
+
+        <Route
+          path="/freelancer/jobs"
+          element={
+            <PrivateRoute role="freelancer" userRole={userRole} token={token}>
+              <BrowseJobs />
+            </PrivateRoute>
+          }
+         />
+
+        <Route
+          path="/freelancer/applyJob/:jobId"
+          element={
+            <PrivateRoute role="freelancer" userRole={userRole} token={token}>
+              <ApplyJob />
+            </PrivateRoute>
+          }
+         />
       </Routes>
     </>
   );
