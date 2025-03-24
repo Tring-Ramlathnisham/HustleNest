@@ -30,7 +30,6 @@ const typeDefs = gql`
   }
 
   type Project {
-    id: ID!
     job: Job!
     freelancer: User!
     client: User!

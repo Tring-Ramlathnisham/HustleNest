@@ -45,7 +45,7 @@ const Applications = () => {
               <h4>{job.title}</h4>
               <p><strong>Client: </strong> {clientName}</p>
               <p><strong>Domain: </strong> {job.domain}</p>
-              <p><strong>Status: </strong>{status}</p>
+              <p><strong>Status: </strong>{status[0].toUpperCase()+status.substring(1)}</p>
             </div>
           ))
         ) : (

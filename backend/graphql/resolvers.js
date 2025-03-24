@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../config/database.js";
-import dotenv from "dotenv";
+
 
 const fetchJobById = async (jobId) => {
     try {
@@ -231,7 +231,7 @@ const resolvers = {
         );
   
         const user = result.rows[0];
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+        const token = jwt.sign({ id: user.id,role:user.role,email:user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
   
         return { ...user, token };
       }
@@ -254,6 +254,7 @@ const resolvers = {
       },
   
       postJob: async (_, { title, description, budget, domain }, { user }) => {
+        console.log('user:',user);
         if (!user || user.role !== "client") throw new Error("Not authorized");
       
         const client = await pool.connect(); // Get a client connection
@@ -277,13 +278,13 @@ const resolvers = {
       },
       
       applyJob: async (_, { jobId, coverLetter, proposedBudget }, { user }) => {
+        console.log('user:',user);
         if (!user) {
           throw new Error("Authentication required to apply for jobs");
         }
         if (user.role !== "freelancer") {
             throw new Error(" Only freelancers can apply for jobs");
         }
-
     
         try {
             const result = await pool.query(
@@ -307,81 +308,93 @@ const resolvers = {
     },
     
       
-  
-    acceptProposal: async (_, { proposalId },{user}) => {
+    acceptProposal: async (_, { proposalId }, { user }) => {
       if (!user) {
-        throw new Error("Authentication required to accept the proposals");
+        throw new Error("Authentication required to accept the proposal.");
       }
       if (user.role !== "client") {
-          throw new Error(" Unauthorized: Only clients can accept the proposals");
+        throw new Error("Unauthorized: Only clients can accept proposals.");
       }
-      const client = await pool.connect(); 
+    
+      const client = await pool.connect();
+      
       try {
-          await client.query("BEGIN"); 
-
-          const alreadyAccepted=await client.query(
-            ` SELECT * FROM proposals where "jobId"=(Select "jobId" from proposals where id=$1) and status='accepted' ;`,[proposalId]
-          );
-
-          if(alreadyAccepted.rows.length==0){
-  
-          const proposalResult = await client.query(`
-              SELECT p.*, j."clientId" 
-              FROM proposals p
-              JOIN jobs j ON p."jobId" = j.id
-              WHERE p.id = $1
-          `, [proposalId]);
-  
-          const proposal = proposalResult.rows[0];
-  
-          if (!proposal) {
-              throw new Error("Proposal not found");
-          }
-          if (proposal.clientId !== user.id) {
-            throw new Error(" Unauthorized: You can only accept proposals for your own jobs");
-        }
-  
-          //  Mark the selected proposal as "accepted"
-          await client.query(
-              `UPDATE proposals SET status = 'accepted' WHERE id = $1`,
-              [proposalId]
-          );
-  
-          //  Mark all other proposals for the same job as "rejected"
-          await client.query(
-              `UPDATE proposals SET status = 'rejected' WHERE "jobId" = $1 AND id != $2`,
-              [proposal.jobId, proposalId]
-          );
-          // Mark the job status as in-progress since it does not going to receive a proposals
-          await client.query(
-            `UPDATE jobs SET status = 'in progress' WHERE "id" = $1`,
-            [proposal.jobId]
+        await client.query("BEGIN");
+    
+        // Check if the job is already assigned
+        const alreadyAccepted = await client.query(
+          `SELECT * FROM projects WHERE "jobId" = (SELECT "jobId" FROM proposals WHERE id = $1)`,
+          [proposalId]
         );
-  
-          //  Create a new project in the projects table
-          const projectResult = await client.query(
-              `INSERT INTO projects ("jobId", "freelancerId", "clientId", "status", "deadline") 
-               VALUES ($1, $2, $3, 'in progress', NOW() + INTERVAL '30 days') 
-               RETURNING *`,
-              [proposal.jobId, proposal.freelancerId, proposal.clientId]
-          );
-  
-          await client.query("COMMIT"); 
-  
-          return projectResult.rows[0]; 
-        }
-        else{
+    
+        if (alreadyAccepted.rows.length > 0) {
+          await client.query("ROLLBACK");
           throw new Error("This job is already assigned to someone else.");
-          }
         }
-      catch (error) {
-          await client.query("ROLLBACK"); 
-          console.error(" Error in acceptProposal:", error);
-          throw new Error("Failed to accept the proposal");
+    
+        // Fetch proposal and job details
+        const proposalResult = await client.query(
+          `SELECT p.*, j."clientId" 
+           FROM proposals p
+           JOIN jobs j ON p."jobId" = j.id
+           WHERE p.id = $1`,
+          [proposalId]
+        );
+    
+        const proposal = proposalResult.rows[0];
+    
+        if (!proposal) {
+          throw new Error("Proposal not found.");
+        }
+        if (proposal.clientId !== user.id) {
+          throw new Error("Unauthorized: You can only accept proposals for your own jobs.");
+        }
+    
+        // Mark the selected proposal as "accepted"
+        await client.query(
+          `UPDATE proposals SET status = 'accepted' WHERE id = $1`,
+          [proposalId]
+        );
+    
+        // Mark all other proposals for the same job as "rejected"
+        await client.query(
+          `UPDATE proposals SET status = 'rejected' WHERE "jobId" = $1 AND id != $2`,
+          [proposal.jobId, proposalId]
+        );
+    
+        // Mark the job status as in-progress
+        await client.query(
+          `UPDATE jobs SET status = 'in progress' WHERE id = $1`,
+          [proposal.jobId]
+        );
+    
+        // Ensure freelancerId is not null before inserting into projects
+        if (!proposal.freelancerId) {
+          await client.query("ROLLBACK");
+          throw new Error("Proposal is missing freelancer information.");
+        }
+    
+        // Insert into projects
+        const projectResult = await client.query(
+          `INSERT INTO projects ("jobId", "freelancerId", "clientId", "status", "deadline") 
+           VALUES ($1, $2, $3, 'in progress', NOW() + INTERVAL '30 days') 
+           RETURNING *`,
+          [proposal.jobId, proposal.freelancerId, proposal.clientId]
+        );
+    
+        await client.query("COMMIT");
+    
+        return projectResult.rows[0];
+    
+      } catch (error) {
+        await client.query("ROLLBACK");
+        console.error("Error in acceptProposal:", error);
+        throw new Error("Failed to accept the proposal.");
       } finally {
-          client.release(); 
+        client.release();
       }
-  },
+    },
+    
   
   rejectProposal:async(_,{proposalId},{user})=>{
     if (!user) {

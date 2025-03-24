@@ -33,7 +33,8 @@ const JobList = () => {
     <div className={styles.jobListPage}>
       <h3>Posted Jobs</h3>
       <div className={styles.jobGrid}>
-        {data.getClientDashboardStats.jobs.map((job) => (
+        {data?.getClientDashboardStats.jobs.length>0?(
+          data.getClientDashboardStats.jobs.map((job) => (
           <div
             key={job.id}
             className={styles.jobCard}
@@ -42,7 +43,9 @@ const JobList = () => {
             <h4>{job.title}</h4>
             <p>Proposals: <span className={styles.proposalCount}>{job.proposalCount}</span></p>
           </div>
-        ))}
+        ))):(
+          <p className={styles.noJobs}>You haven't posted any jobs yet </p>
+        )}
       </div>
       <button className={styles.backButton} onClick={() => navigate(-1)}>Back</button>
     </div>

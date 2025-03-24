@@ -38,19 +38,22 @@ const ClientDashboard = () => {
 
   useEffect(() => {
     if (data) {
+      const {totalJobs,totalProposals,activeProjects}=data.getClientDashboardStats;
+      const isDataAvailable=totalJobs>0 || totalProposals> 0 || activeProjects > 0;
+      if(isDataAvailable){
       setChartData({
         labels: ["Total Jobs", "Proposals Received", "Active Projects"],
         datasets: [
           {
-            data: [
-              data.getClientDashboardStats.totalJobs,
-              data.getClientDashboardStats.totalProposals,
-              data.getClientDashboardStats.activeProjects,
-            ],
+            data: [totalJobs,totalProposals,activeProjects],
             backgroundColor: ["#00d4ff", "#086af4", "rgb(78, 138, 169)"],
           },
         ],
       });
+    }
+    else{
+      setChartData(null);
+    }
     }
   }, [data]);
 
@@ -84,7 +87,7 @@ const ClientDashboard = () => {
 
           {/* Pie Chart */}
           <div className={styles.chartContainer}>
-            {chartData && <Pie data={chartData} />}
+            {chartData&& <Pie data={chartData} />}
           </div>
         </div>
 

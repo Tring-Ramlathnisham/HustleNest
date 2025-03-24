@@ -19,7 +19,8 @@ const FreelancerDashboard = () => {
   const navigate = useNavigate();
   const user=useSelector((state) => state.auth?.user);
   const freelancerId = user?.id || null;
-  console.log("Id:",freelancerId);
+  console.log("freelancerId:",freelancerId);
+  console.log("user:",user);
 
   const { data, loading, error } = useQuery(GET_FREELANCER_STATS, {
     variables: freelancerId ? { freelancerId: freelancerId.toString() } : null,

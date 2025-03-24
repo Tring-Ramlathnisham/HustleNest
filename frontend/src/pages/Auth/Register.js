@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client"; // Import useMutation
-import { register as registerAction } from "../../context/authSlice";
+import { register } from "../../context/authSlice";
 import styles from "./Auth.module.css"; 
 
 // 🔹 GraphQL mutation for registration
@@ -31,12 +31,11 @@ const Register = () => {
         console.error("Invalid register response");
         return;
       }
-
       const { id, name, email, role, token } = data.register;
       console.log("Registration Successful:", { id, name, email, role, token });
 
       // Dispatch register action to Redux
-      dispatch(registerAction({ user:{id,email} ,role: role, token:token }));
+      dispatch(register({ user:{id,email} ,role: role, token:token }));
 
       // Redirect based on role
       navigate(role === "client" ? "/client/dashboard" : "/freelancer/dashboard");

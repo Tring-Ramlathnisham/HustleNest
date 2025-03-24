@@ -82,13 +82,13 @@ const BrowseJobs = () => {
             <h4>{job.title}</h4>
             <p>{job.description}</p>
             <p>
-              <strong>Client:</strong> {job.client.name}
+              <strong>Client: </strong> {job.client.name}
             </p>
             <p>
-              <strong>Domain:</strong> {job.domain}
+              <strong>Domain: </strong> {job.domain}
             </p>
             <p>
-              <strong>Budget:</strong> {job.budget}
+              <strong>Budget:</strong> ${job.budget}
             </p>
             <button className={styles.applyButton} onClick={()=>navigate(`/freelancer/applyJob/${job.id}`)}>Apply</button>
           </div>

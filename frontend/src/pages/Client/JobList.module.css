@@ -39,22 +39,6 @@
   overflow: hidden;
 }
 
-/* .jobCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(90deg, #007bff, #00d4ff);
-  transition: 0.3s;
-} */
-
-/* .jobCard:hover::before {
-  height: 100%;
-  opacity: 0.4;
-} */
-
 .jobCard h4 {
   font-size: 20px;
   font-weight: 600;
@@ -100,4 +84,10 @@
 .backButton:hover {
   background: #0056b3;
   transform: scale(1.05);
+}
+
+.noJobs {
+  font-size: 16px;
+  color: #999;
+  margin-top: 20px;
 }

@@ -81,7 +81,7 @@ const PostJob = () => {
 
         {/* Budget */}
         <input 
-          type="number" step="0.01" placeholder="Budget" 
+          type="number" step="0.01" placeholder="Budget ($) " 
           {...register("budget", { required: "Budget is required", min: { value: 1, message: "Budget must be at least $1" }})} 
         />
         {errors.budget && <p className={styles.errorMessage}>{errors.budget.message}</p>}

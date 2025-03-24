@@ -9,15 +9,14 @@ import resolvers from "./graphql/resolvers.js";
 dotenv.config();
 
 const app = express();
-app.use(cors(
-)); //{origin:"http://localhost:3000",credentials:true}
-//  Fix: Ensure context always returns an object
+app.use(cors({origin:"http://localhost:3000",credentials:true}));
+
 const createContext = ({ req }) => {
   try {
     const authHeader = req.headers.authorization || "";
     
     if (!authHeader.startsWith("Bearer ")) {
-      return { user: null }; // No token → Allow public requests
+      return { user: null }; 
     }
 
     const token = authHeader.split(" ")[1];

@@ -20,7 +20,9 @@ const GET_JOB_PROPOSALS = gql`
 const ACCEPT_JOB_PROPOSALS = gql`
   mutation AcceptProposal($proposalId: ID!) {
     acceptProposal(proposalId: $proposalId) {
+      job{
       id
+      }
       status
     }
   }
@@ -64,7 +66,9 @@ const ManageProposals = () => {
             ))}
           </ul>
         )}
+         <button className={styles.backButton} onClick={() => navigate(-1)}>Back</button>
     </div>
+     
     </div>
   );
 };

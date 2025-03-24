@@ -56,7 +56,6 @@ const ApplyJob = () => {
       console.error("Application Error:", err);
     }
   };
-
   return (
     <div className={styles.applyJobPage}>
       <h3>Apply for Job</h3>

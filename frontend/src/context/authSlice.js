@@ -34,6 +34,8 @@ const authSlice = createSlice({
       localStorage.setItem("user",JSON.stringify(user));
       localStorage.setItem("token",token);
       localStorage.setItem("role",role);
+
+      console.log("Register state:",state);
     },
     logout: (state) => {
       state.user = null;

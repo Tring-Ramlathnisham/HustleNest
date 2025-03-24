@@ -22,7 +22,9 @@ const GET_PROPOSAL_DETAILS = gql`
 const REJECT_JOB_PROPOSALS = gql`
   mutation RejectProposal($proposalId: ID!) {
     rejectProposal(proposalId: $proposalId) {
-      id  
+      job{
+      id
+      }  
       status  
     }
   }
@@ -31,7 +33,9 @@ const REJECT_JOB_PROPOSALS = gql`
 const ACCEPT_JOB_PROPOSALS = gql`
   mutation AcceptProposal($proposalId: ID!) {
     acceptProposal(proposalId: $proposalId) {
+    job{
       id
+    } 
       status
     }
   }
