@@ -34,8 +34,10 @@ const GET_CLIENT_STATS = gql`
 
 const PostJob = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { user } = useSelector((state) => state.auth?.user);
+  const { user } = useSelector((state) => state.auth);
+  console.log('user:',user);
   const clientId=user?.id|| null;
+  console.log("Client Id:",clientId);
   const navigate =useNavigate();
 
   const [postJob, { loading, error }] = useMutation(POST_JOB_MUTATION,{

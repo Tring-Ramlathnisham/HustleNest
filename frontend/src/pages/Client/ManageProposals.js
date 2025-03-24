@@ -37,6 +37,7 @@ const ManageProposals = () => {
     refetchQueries: [{ query: GET_JOB_PROPOSALS, variables: { jobId } ,fetchPolicy:"network-only",}],
   });
 
+
   if (loading) return <p>Loading proposals...</p>;
   if (error) return <p>Error loading proposals</p>;
 

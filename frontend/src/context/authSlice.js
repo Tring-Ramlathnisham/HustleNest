@@ -21,6 +21,8 @@ const authSlice = createSlice({
       localStorage.setItem("token",token);
       localStorage.setItem("role",role);
 
+    console.log(state);
+      
     },
     register: (state, action) => {
       const {user,token,role}=action.payload;

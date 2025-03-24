@@ -30,7 +30,7 @@ const App = () => {
 
   return (
     <>
-      {/*  Navbar should always be present */}
+      {/*  Navbar */}
       <NavBar isLoggedIn={!!token} userRole={userRole} handleLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />

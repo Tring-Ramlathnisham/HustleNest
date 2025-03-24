@@ -55,7 +55,7 @@ const ProposalDetails = () => {
   });
 
   const handleAcceptProposal=async(event)=>{
-    event.stopPropogation();
+    event.preventDefault();
     if(window.confirm("Are you sure you want to accept this proposal?")){
       try{
         await acceptProposal();
@@ -75,7 +75,7 @@ const ProposalDetails = () => {
 
 
   const handleRejectProposal = async (event) => {
-    event.stopPropagation();
+    event.preventDefault();
 
     if (window.confirm("Are you sure you want to reject this proposal?")) {
       try {

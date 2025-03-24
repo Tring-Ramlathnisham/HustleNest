@@ -29,6 +29,7 @@ const Applications = () => {
   const { data, loading, error } = useQuery(GET_APPLIED_JOBS, {
     variables: freelancerId ? { freelancerId: freelancerId.toString() } : null,
     skip: !freelancerId, 
+    fetchPolicy:"network-only",
   });
 
   if (loading) return <p>Loading applied jobs...</p>;

@@ -28,6 +28,7 @@ const AcceptedProjects = () => {
   const { data, loading, error } = useQuery(GET_ACCEPTED_PROJECTS, {
     variables: freelancerId ? { freelancerId: freelancerId.toString() } : null,
     skip: !freelancerId,
+    fetchPolicy:"network-only",
   });
 
   if (loading) return <p>Loading accepted projects...</p>;
