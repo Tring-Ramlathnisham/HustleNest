@@ -2,16 +2,13 @@ import express from "express";
 import {mergeTypeDefs,mergeResolvers} from '@graphql-tools/merge'
 import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
-import userTypeDef from "./graphql/User/userTypeDefs.js";
-import userResolvers from "./graphql/User/userResolvers.js";
-import clientResolvers from "./graphql/Client/clientResolvers.js";
-import clientTypeDefs from "./graphql/Client/clientTypeDefs.js";
-import freelancerResolvers from "./graphql/Freelancer/freelancerResolvers.js";
-import freelancerTypeDefs from "./graphql/Freelancer/freelancerTypeDefs.js";
-import createContext from "./Middleware/Auth.js";
-
-
-
+import userTypeDef from "./graphql/user/userTypeDefs.js";
+import userResolvers from "./graphql/user/userResolvers.js";
+import clientResolvers from "./graphql/client/clientResolvers.js";
+import clientTypeDefs from "./graphql/client/clientTypeDefs.js";
+import freelancerResolvers from "./graphql/freelancer/freelancerResolvers.js";
+import freelancerTypeDefs from "./graphql/freelancer/freelancerTypeDefs.js";
+import createContext from "./Middleware/auth.js";
 
 
 const app = express();

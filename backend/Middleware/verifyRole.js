@@ -1,4 +1,4 @@
-const verifyRole = (user, requiredRole) => {
+const verifyRole = async(user, requiredRole) => {
     if (!user) {
         throw new Error("Authentication required");
     }

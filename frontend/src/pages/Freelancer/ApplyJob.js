@@ -1,35 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./ApplyJob.module.css";
 import { useSelector } from "react-redux";
-
-const APPLY_JOB = gql`
-  mutation ApplyJob($jobId: ID!, $coverLetter: String!, $proposedBudget: Float!) {
-    applyJob(jobId: $jobId, coverLetter: $coverLetter, proposedBudget: $proposedBudget) {
-      id
-      job {
-        id
-        title
-      }
-      freelancer {
-        id
-      }
-    }
-  }
-`;
-
-const GET_FREELANCER_STATS = gql`
-  query GetFreelancerDashboardStats($freelancerId: ID!) {
-    getFreelancerDashboardStats(freelancerId: $freelancerId) {
-      totalJobsApplied
-      totalProposalsPending
-      totalProjectsAccepted
-    }
-  }
-`;
-
+import APPLY_JOB from "../../api/freelancer/applyJob";
+import GET_FREELANCER_STATS from "../../api/freelancer/getFreelancerStats";
 
 const ApplyJob = () => {
   const { jobId } = useParams(); 
@@ -43,7 +19,7 @@ const ApplyJob = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await applyJob({
+      await applyJob({
         variables: {
           jobId,
           coverLetter: data.coverLetter,

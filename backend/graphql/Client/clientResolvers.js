@@ -1,14 +1,21 @@
 import {pool} from "../../config/database.js";
-import { fetchJobById,fetchUserById } from "../../Helper/fetchHelper.js";
-import verifyRole from "../../Middleware/verifyRole.js";
+import { fetchJobById,fetchUserById } from "../../helper/fetchHelper.js";
+import verifyRole from "../../middleware/verifyRole.js";
 
 const clientResolvers={
-    Query:{
-         proposals: async (_, { jobId },{user}) => {
-          verifyRole(user,'client');
-            const result = await pool.query(`SELECT * FROM proposals WHERE "jobId" = $1`, [jobId]);
-            return result.rows;
+      Query:{
+          proposals: async (_, { jobId }, { user }) => {
+            await verifyRole(user, 'client');
+        
+            try {
+                const result = await pool.query(`SELECT * FROM proposals WHERE "jobId" = $1`, [jobId]);
+                return result.rows;
+            } catch (error) {
+                console.error("unable to fetch proposals:", error);
+                throw new Error("Internal Server Error while fetching proposals");
+            }
         },
+    
         getClientDashboardStats:async(_,{clientId})=>{
         
                 try{
@@ -42,7 +49,8 @@ const clientResolvers={
               }
         },
          proposal:async(_,{proposalId},{user})=>{
-          verifyRole(user,'client');
+          console.log("proposal details:",proposalId);
+          await verifyRole(user,'client');
                 try {
                   const proposalQuery=`Select * from proposals where id=$1`;
                   const  result = await pool.query(proposalQuery, [proposalId]);
@@ -61,7 +69,7 @@ const clientResolvers={
     },
     Mutation:{
         postJob: async (_, { title, description, budget, domain }, { user }) => {
-          verifyRole(user,'client');
+          await verifyRole(user,'client');
               
                 const client = await pool.connect(); // Get a client connection
                 try {
@@ -83,7 +91,7 @@ const clientResolvers={
                 }
         },
         acceptProposal: async (_, { proposalId }, { user }) => {
-          verifyRole(user,'client');
+          await verifyRole(user,'client');
             
               const client = await pool.connect();
               
@@ -166,7 +174,7 @@ const clientResolvers={
             
           
           rejectProposal:async(_,{proposalId},{user})=>{
-            verifyRole(user,'client');
+            await verifyRole(user,'client');
             const client = await pool.connect(); 
             try {
               await client.query("BEGIN");

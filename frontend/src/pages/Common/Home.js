@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
-import freelance from "../../Assets/freelance1.jpg"
+import freelance from "../../assets/freelance1.jpg"
 
 const Home = () => {
   const navigate = useNavigate();

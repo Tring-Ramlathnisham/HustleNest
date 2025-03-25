@@ -5,9 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client"; // Import useMutation
 import { register } from "../../context/authSlice";
 import styles from "./Auth.module.css"; 
-import REGISTER_MUTATION from "../../api/Auth/register";
+import REGISTER_MUTATION from "../../api/auth/register";
 
-// 🔹 GraphQL mutation for registration
 
 
 const Register = () => {
@@ -15,7 +14,7 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // 🔹 useMutation hook for registration
+  //  useMutation hook for registration
   const [registerMutation, { loading, error }] = useMutation(REGISTER_MUTATION, {
     onCompleted: (data) => {
       if (!data || !data.register) {
@@ -33,7 +32,7 @@ const Register = () => {
     },
   });
 
-  // 🔹 Form submission handler
+  //  Form submission handler
   const onSubmit = async (formData) => {
     try {
       await registerMutation({variables: formData
