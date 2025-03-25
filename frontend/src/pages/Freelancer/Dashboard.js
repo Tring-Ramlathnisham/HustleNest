@@ -1,19 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import gql from "graphql-tag";
 import styles from "./Dashboard.module.css";
 import { useSelector } from "react-redux";
-
-const GET_FREELANCER_STATS = gql`
-  query GetFreelancerDashboardStats($freelancerId: ID!) {
-    getFreelancerDashboardStats(freelancerId: $freelancerId) {
-      totalJobsApplied
-      totalProposalsPending
-      totalProjectsAccepted
-    }
-  }
-`;
+import GET_FREELANCER_STATS from "../../api/freelancer/getFreelancerStats"
 
 const FreelancerDashboard = () => {
   const navigate = useNavigate();
@@ -28,20 +18,18 @@ const FreelancerDashboard = () => {
   });
   console.log("Data:",data);
 
-  // Quotes Array
-  const quotes = [
-    "Success usually comes to those who are too busy to be looking for it.",
-    "Don’t watch the clock; do what it does. Keep going.",
-    "Opportunities don’t happen. You create them.",
-    "The best way to predict the future is to create it.",
-    "Work hard in silence, let success make the noise.",
-  ];
-
   // State to store the selected quote
   const [quote, setQuote] = useState("");
 
   // Function to randomly select a quote on mount
   useEffect(() => {
+    const quotes = [
+      "Success usually comes to those who are too busy to be looking for it.",
+      "Don’t watch the clock; do what it does. Keep going.",
+      "Opportunities don’t happen. You create them.",
+      "The best way to predict the future is to create it.",
+      "Work hard in silence, let success make the noise.",
+    ];
     setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
   }, []);
 
