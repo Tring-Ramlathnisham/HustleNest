@@ -1,9 +1,12 @@
 import {pool} from "../../config/database.js";
 import { fetchJobById,fetchUserById } from "../../Helper/fetchHelper.js";
+import verifyRole from "../../Middleware/verifyRole.js";
 
 const freelancerResolvers={
     Query:{
-        jobs: async () => {
+        jobs: async (_,__,{user}) => {
+          verifyRole(user,'freelancer');
+          
             const result = await pool.query("SELECT * FROM jobs where status='open'");
             return result.rows;
         },
@@ -26,7 +29,8 @@ const freelancerResolvers={
             }
           
         },
-        getAppliedJobs: async (_, { freelancerId }) => {
+        getAppliedJobs: async (_, { freelancerId },{user}) => {
+          verifyRole(user,'freelancer');
             try {
               // console.log("Fetching applied jobs for freelancerId:", freelancerId);
           
@@ -71,7 +75,8 @@ const freelancerResolvers={
               throw new Error("Failed to fetch applied jobs");
             }
           },
-          getAcceptedProjects: async (_, { freelancerId }) => {
+          getAcceptedProjects: async (_, { freelancerId },{user}) => {
+            verifyRole(user,'freelancer');
             try {
               //console.log("Fetching accepted projects for freelancerId:", freelancerId);
           
@@ -111,14 +116,7 @@ const freelancerResolvers={
     },
     Mutation:{
         applyJob: async (_, { jobId, coverLetter, proposedBudget }, { user }) => {
-            console.log('user:',user);
-            if (!user) {
-              throw new Error("Authentication required to apply for jobs");
-            }
-            if (user.role !== "freelancer") {
-                throw new Error(" Only freelancers can apply for jobs");
-            }
-        
+            verifyRole(user,'freelancer');
             try {
                 const result = await pool.query(
                     `INSERT INTO proposals ("jobId", "freelancerId", "coverLetter", "proposedBudget", status, "submittedAt") 

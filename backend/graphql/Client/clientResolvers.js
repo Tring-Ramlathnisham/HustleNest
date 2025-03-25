@@ -1,8 +1,11 @@
 import {pool} from "../../config/database.js";
 import { fetchJobById,fetchUserById } from "../../Helper/fetchHelper.js";
+import verifyRole from "../../Middleware/verifyRole.js";
+
 const clientResolvers={
     Query:{
-         proposals: async (_, { jobId }) => {
+         proposals: async (_, { jobId },{user}) => {
+          verifyRole(user,'client');
             const result = await pool.query(`SELECT * FROM proposals WHERE "jobId" = $1`, [jobId]);
             return result.rows;
         },
@@ -38,7 +41,8 @@ const clientResolvers={
                 throw new Error("Failed to fetch client dashboard stats");
               }
         },
-         proposal:async(_,{proposalId})=>{
+         proposal:async(_,{proposalId},{user})=>{
+          verifyRole(user,'client');
                 try {
                   const proposalQuery=`Select * from proposals where id=$1`;
                   const  result = await pool.query(proposalQuery, [proposalId]);
@@ -57,8 +61,7 @@ const clientResolvers={
     },
     Mutation:{
         postJob: async (_, { title, description, budget, domain }, { user }) => {
-                console.log('user:',user);
-                if (!user || user.role !== "client") throw new Error("Not authorized");
+          verifyRole(user,'client');
               
                 const client = await pool.connect(); // Get a client connection
                 try {
@@ -80,12 +83,7 @@ const clientResolvers={
                 }
         },
         acceptProposal: async (_, { proposalId }, { user }) => {
-              if (!user) {
-                throw new Error("Authentication required to accept the proposal.");
-              }
-              if (user.role !== "client") {
-                throw new Error("Unauthorized: Only clients can accept proposals.");
-              }
+          verifyRole(user,'client');
             
               const client = await pool.connect();
               
@@ -168,12 +166,7 @@ const clientResolvers={
             
           
           rejectProposal:async(_,{proposalId},{user})=>{
-            if (!user) {
-              throw new Error("Authentication required to accept the proposals");
-            }
-            if (user.role !== "client") {
-                throw new Error(" Unauthorized: Only clients can accept the proposals");
-            }
+            verifyRole(user,'client');
             const client = await pool.connect(); 
             try {
               await client.query("BEGIN");
