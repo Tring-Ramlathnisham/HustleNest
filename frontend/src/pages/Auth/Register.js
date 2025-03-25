@@ -2,22 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client"; // Import useMutation
+import { useMutation } from "@apollo/client"; // Import useMutation
 import { register } from "../../context/authSlice";
 import styles from "./Auth.module.css"; 
+import REGISTER_MUTATION from "../../api/Auth/register";
 
 // 🔹 GraphQL mutation for registration
-const REGISTER_MUTATION = gql`
-  mutation Register($name: String!, $email: String!, $password: String!, $role: String!) {
-    register(name: $name, email: $email, password: $password, role: $role) {
-      id
-      name
-      email
-      role
-      token
-    }
-  }
-`;
+
 
 const Register = () => {
   const { register: formRegister, handleSubmit, formState: { errors } } = useForm();
@@ -45,7 +36,8 @@ const Register = () => {
   // 🔹 Form submission handler
   const onSubmit = async (formData) => {
     try {
-      await registerMutation({ variables: formData });
+      await registerMutation({variables: formData
+    });
     } catch (err) {
       console.error("Registration Error:", err.message);
     }

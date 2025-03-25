@@ -44,10 +44,10 @@ const resolvers = {
         return result.rows;
       },
   
-      proposals: async (_, { jobId }) => {
-        const result = await pool.query(`SELECT * FROM proposals WHERE "jobId" = $1`, [jobId]);
-        return result.rows;
-      },
+      // proposals: async (_, { jobId }) => {
+      //   const result = await pool.query(`SELECT * FROM proposals WHERE "jobId" = $1`, [jobId]);
+      //   return result.rows;
+      // },
       getJobs: async (_, { domain }) => {
         let query = `SELECT * FROM jobs WHERE status = 'open'`;
         let values = [];
@@ -65,54 +65,54 @@ const resolvers = {
         return result.rows;
       },
 
-      getClientDashboardStats:async(_,{clientId})=>{
+      // getClientDashboardStats:async(_,{clientId})=>{
 
-        try{
-          //console.log("fetching client id in resolver:",clientId);
-        const totalJobs=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"= $1`,[clientId]);
+      //   try{
+      //     //console.log("fetching client id in resolver:",clientId);
+      //   const totalJobs=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"= $1`,[clientId]);
 
-       // console.log("Total jobs:",totalJobs.rows[0]);
-        const totalProposals=await pool.query(`SELECT COUNT(*) FROM proposals WHERE "jobId" IN (SELECT id FROM jobs WHERE "clientId"=$1)`,[clientId]);
-       // console.log("Total proposals:",totalProposals.rows[0]);
-        const activeProjects=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"=$1 AND status='in progress'`,[clientId]); 
-        //console.log("Active projects:",activeProjects.rows[0]);
-        const jobs=await pool.query(
-          `SELECT j.id,j.title,(SELECT COUNT(*) FROM proposals p WHERE p."jobId"=j.id) AS "proposalCount"
-           FROM jobs j
-           WHERE j."clientId"=$1`,
-           [clientId]
-         //Select id,title from jobs where "clientId"=$1`,[clientId] 
+      //  // console.log("Total jobs:",totalJobs.rows[0]);
+      //   const totalProposals=await pool.query(`SELECT COUNT(*) FROM proposals WHERE "jobId" IN (SELECT id FROM jobs WHERE "clientId"=$1)`,[clientId]);
+      //  // console.log("Total proposals:",totalProposals.rows[0]);
+      //   const activeProjects=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"=$1 AND status='in progress'`,[clientId]); 
+      //   //console.log("Active projects:",activeProjects.rows[0]);
+      //   const jobs=await pool.query(
+      //     `SELECT j.id,j.title,(SELECT COUNT(*) FROM proposals p WHERE p."jobId"=j.id) AS "proposalCount"
+      //      FROM jobs j
+      //      WHERE j."clientId"=$1`,
+      //      [clientId]
+      //    //Select id,title from jobs where "clientId"=$1`,[clientId] 
            
-        );
+      //   );
      
-        return {
-          totalJobs:parseInt(totalJobs.rows[0].count),
-          totalProposals:parseInt(totalProposals.rows[0].count),
-          activeProjects:parseInt(activeProjects.rows[0].count),
-          jobs:jobs.rows,
-        };
-      }
-      catch(error){
-        console.error("Error fetching client dashboard stats:",error);
-        throw new Error("Failed to fetch client dashboard stats");
-      }
-      },
-      proposal:async(_,{proposalId})=>{
-        try {
-          const proposalQuery=`Select * from proposals where id=$1`;
-          const  result = await pool.query(proposalQuery, [proposalId]);
+      //   return {
+      //     totalJobs:parseInt(totalJobs.rows[0].count),
+      //     totalProposals:parseInt(totalProposals.rows[0].count),
+      //     activeProjects:parseInt(activeProjects.rows[0].count),
+      //     jobs:jobs.rows,
+      //   };
+      // }
+      // catch(error){
+      //   console.error("Error fetching client dashboard stats:",error);
+      //   throw new Error("Failed to fetch client dashboard stats");
+      // }
+      // },
+      // proposal:async(_,{proposalId})=>{
+      //   try {
+      //     const proposalQuery=`Select * from proposals where id=$1`;
+      //     const  result = await pool.query(proposalQuery, [proposalId]);
   
-          if (result.rows.length === 0) {
-            throw new Error("Proposal not found");
-          }
+      //     if (result.rows.length === 0) {
+      //       throw new Error("Proposal not found");
+      //     }
   
-          return result.rows[0];
+      //     return result.rows[0];
          
-        } catch (error) {
-          console.error(error);
-          throw new Error("Failed to fetch proposal details");
-        }
-      },
+      //   } catch (error) {
+      //     console.error(error);
+      //     throw new Error("Failed to fetch proposal details");
+      //   }
+      // },
 
       getFreelancerDashboardStats:async(_,{freelancerId})=>{
 
@@ -221,61 +221,61 @@ const resolvers = {
     },
   
     Mutation: {
-      register: async (_, { name, email, password, role }) => {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const existsAccount=await pool.query(`SELECT * FROM users WHERE email=$1`,[email]);
-        if(existsAccount.rows.length==0){
-        const result = await pool.query(
-          "INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
-          [name, email, hashedPassword, role]
-        );
+      // register: async (_, { name, email, password, role }) => {
+      //   const hashedPassword = await bcrypt.hash(password, 10);
+      //   const existsAccount=await pool.query(`SELECT * FROM users WHERE email=$1`,[email]);
+      //   if(existsAccount.rows.length==0){
+      //   const result = await pool.query(
+      //     "INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
+      //     [name, email, hashedPassword, role]
+      //   );
   
-        const user = result.rows[0];
-        const token = jwt.sign({ id: user.id,role:user.role,email:user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
+      //   const user = result.rows[0];
+      //   const token = jwt.sign({ id: user.id,role:user.role,email:user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
   
-        return { ...user, token };
-      }
-      else{
-        throw new Error('Already Have an account with this email..');
-      }
-      },
+      //   return { ...user, token };
+      // }
+      // else{
+      //   throw new Error('Already Have an account with this email..');
+      // }
+      // },
   
-      login: async (_, { email, password }) => {
-        const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-        const user = result.rows[0];
+      // login: async (_, { email, password }) => {
+      //   const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+      //   const user = result.rows[0];
   
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-          throw new Error("Invalid credentials");
-        }
+      //   if (!user || !(await bcrypt.compare(password, user.password))) {
+      //     throw new Error("Invalid credentials");
+      //   }
   
-        const token = jwt.sign({ id: user.id, role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
+      //   const token = jwt.sign({ id: user.id, role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
   
-        return { ...user, token };
-      },
+      //   return { ...user, token };
+      // },
   
-      postJob: async (_, { title, description, budget, domain }, { user }) => {
-        console.log('user:',user);
-        if (!user || user.role !== "client") throw new Error("Not authorized");
+      // postJob: async (_, { title, description, budget, domain }, { user }) => {
+      //   console.log('user:',user);
+      //   if (!user || user.role !== "client") throw new Error("Not authorized");
       
-        const client = await pool.connect(); // Get a client connection
-        try {
-          await client.query("BEGIN"); // Start transaction
+      //   const client = await pool.connect(); // Get a client connection
+      //   try {
+      //     await client.query("BEGIN"); // Start transaction
       
-          const result = await client.query(
-            `INSERT INTO jobs ("clientId", title, description, budget, domain) 
-             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-            [user.id, title, description, budget, domain]
-          );
+      //     const result = await client.query(
+      //       `INSERT INTO jobs ("clientId", title, description, budget, domain) 
+      //        VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      //       [user.id, title, description, budget, domain]
+      //     );
       
-          await client.query("COMMIT"); // Commit transaction
-          return result.rows[0];
-        } catch (error) {
-          await client.query("ROLLBACK"); // Rollback transaction on error
-          throw new Error("Failed to post job: " + error.message);
-        } finally {
-          client.release(); // Release client connection
-        }
-      },
+      //     await client.query("COMMIT"); // Commit transaction
+      //     return result.rows[0];
+      //   } catch (error) {
+      //     await client.query("ROLLBACK"); // Rollback transaction on error
+      //     throw new Error("Failed to post job: " + error.message);
+      //   } finally {
+      //     client.release(); // Release client connection
+      //   }
+      // },
       
       applyJob: async (_, { jobId, coverLetter, proposedBudget }, { user }) => {
         console.log('user:',user);
@@ -308,137 +308,137 @@ const resolvers = {
     },
     
       
-    acceptProposal: async (_, { proposalId }, { user }) => {
-      if (!user) {
-        throw new Error("Authentication required to accept the proposal.");
-      }
-      if (user.role !== "client") {
-        throw new Error("Unauthorized: Only clients can accept proposals.");
-      }
+  //   acceptProposal: async (_, { proposalId }, { user }) => {
+  //     if (!user) {
+  //       throw new Error("Authentication required to accept the proposal.");
+  //     }
+  //     if (user.role !== "client") {
+  //       throw new Error("Unauthorized: Only clients can accept proposals.");
+  //     }
     
-      const client = await pool.connect();
+  //     const client = await pool.connect();
       
-      try {
-        await client.query("BEGIN");
+  //     try {
+  //       await client.query("BEGIN");
     
-        // Check if the job is already assigned
-        const alreadyAccepted = await client.query(
-          `SELECT * FROM projects WHERE "jobId" = (SELECT "jobId" FROM proposals WHERE id = $1)`,
-          [proposalId]
-        );
+  //       // Check if the job is already assigned
+  //       const alreadyAccepted = await client.query(
+  //         `SELECT * FROM projects WHERE "jobId" = (SELECT "jobId" FROM proposals WHERE id = $1)`,
+  //         [proposalId]
+  //       );
     
-        if (alreadyAccepted.rows.length > 0) {
-          await client.query("ROLLBACK");
-          throw new Error("This job is already assigned to someone else.");
-        }
+  //       if (alreadyAccepted.rows.length > 0) {
+  //         await client.query("ROLLBACK");
+  //         throw new Error("This job is already assigned to someone else.");
+  //       }
     
-        // Fetch proposal and job details
-        const proposalResult = await client.query(
-          `SELECT p.*, j."clientId" 
-           FROM proposals p
-           JOIN jobs j ON p."jobId" = j.id
-           WHERE p.id = $1`,
-          [proposalId]
-        );
+  //       // Fetch proposal and job details
+  //       const proposalResult = await client.query(
+  //         `SELECT p.*, j."clientId" 
+  //          FROM proposals p
+  //          JOIN jobs j ON p."jobId" = j.id
+  //          WHERE p.id = $1`,
+  //         [proposalId]
+  //       );
     
-        const proposal = proposalResult.rows[0];
+  //       const proposal = proposalResult.rows[0];
     
-        if (!proposal) {
-          throw new Error("Proposal not found.");
-        }
-        if (proposal.clientId !== user.id) {
-          throw new Error("Unauthorized: You can only accept proposals for your own jobs.");
-        }
+  //       if (!proposal) {
+  //         throw new Error("Proposal not found.");
+  //       }
+  //       if (proposal.clientId !== user.id) {
+  //         throw new Error("Unauthorized: You can only accept proposals for your own jobs.");
+  //       }
     
-        // Mark the selected proposal as "accepted"
-        await client.query(
-          `UPDATE proposals SET status = 'accepted' WHERE id = $1`,
-          [proposalId]
-        );
+  //       // Mark the selected proposal as "accepted"
+  //       await client.query(
+  //         `UPDATE proposals SET status = 'accepted' WHERE id = $1`,
+  //         [proposalId]
+  //       );
     
-        // Mark all other proposals for the same job as "rejected"
-        await client.query(
-          `UPDATE proposals SET status = 'rejected' WHERE "jobId" = $1 AND id != $2`,
-          [proposal.jobId, proposalId]
-        );
+  //       // Mark all other proposals for the same job as "rejected"
+  //       await client.query(
+  //         `UPDATE proposals SET status = 'rejected' WHERE "jobId" = $1 AND id != $2`,
+  //         [proposal.jobId, proposalId]
+  //       );
     
-        // Mark the job status as in-progress
-        await client.query(
-          `UPDATE jobs SET status = 'in progress' WHERE id = $1`,
-          [proposal.jobId]
-        );
+  //       // Mark the job status as in-progress
+  //       await client.query(
+  //         `UPDATE jobs SET status = 'in progress' WHERE id = $1`,
+  //         [proposal.jobId]
+  //       );
     
-        // Ensure freelancerId is not null before inserting into projects
-        if (!proposal.freelancerId) {
-          await client.query("ROLLBACK");
-          throw new Error("Proposal is missing freelancer information.");
-        }
+  //       // Ensure freelancerId is not null before inserting into projects
+  //       if (!proposal.freelancerId) {
+  //         await client.query("ROLLBACK");
+  //         throw new Error("Proposal is missing freelancer information.");
+  //       }
     
-        // Insert into projects
-        const projectResult = await client.query(
-          `INSERT INTO projects ("jobId", "freelancerId", "clientId", "status", "deadline") 
-           VALUES ($1, $2, $3, 'in progress', NOW() + INTERVAL '30 days') 
-           RETURNING *`,
-          [proposal.jobId, proposal.freelancerId, proposal.clientId]
-        );
+  //       // Insert into projects
+  //       const projectResult = await client.query(
+  //         `INSERT INTO projects ("jobId", "freelancerId", "clientId", "status", "deadline") 
+  //          VALUES ($1, $2, $3, 'in progress', NOW() + INTERVAL '30 days') 
+  //          RETURNING *`,
+  //         [proposal.jobId, proposal.freelancerId, proposal.clientId]
+  //       );
     
-        await client.query("COMMIT");
+  //       await client.query("COMMIT");
     
-        return projectResult.rows[0];
+  //       return projectResult.rows[0];
     
-      } catch (error) {
-        await client.query("ROLLBACK");
-        console.error("Error in acceptProposal:", error);
-        throw new Error("Failed to accept the proposal.");
-      } finally {
-        client.release();
-      }
-    },
+  //     } catch (error) {
+  //       await client.query("ROLLBACK");
+  //       console.error("Error in acceptProposal:", error);
+  //       throw new Error("Failed to accept the proposal.");
+  //     } finally {
+  //       client.release();
+  //     }
+  //   },
     
   
-  rejectProposal:async(_,{proposalId},{user})=>{
-    if (!user) {
-      throw new Error("Authentication required to accept the proposals");
-    }
-    if (user.role !== "client") {
-        throw new Error(" Unauthorized: Only clients can accept the proposals");
-    }
-    const client = await pool.connect(); 
-    try {
-      await client.query("BEGIN");
-      const proposalResult = await client.query(`
-        SELECT p.*, j."clientId" 
-        FROM proposals p
-        JOIN jobs j ON p."jobId" = j.id
-        WHERE p.id = $1
-    `, [proposalId]);
+  // rejectProposal:async(_,{proposalId},{user})=>{
+  //   if (!user) {
+  //     throw new Error("Authentication required to accept the proposals");
+  //   }
+  //   if (user.role !== "client") {
+  //       throw new Error(" Unauthorized: Only clients can accept the proposals");
+  //   }
+  //   const client = await pool.connect(); 
+  //   try {
+  //     await client.query("BEGIN");
+  //     const proposalResult = await client.query(`
+  //       SELECT p.*, j."clientId" 
+  //       FROM proposals p
+  //       JOIN jobs j ON p."jobId" = j.id
+  //       WHERE p.id = $1
+  //   `, [proposalId]);
 
-    const proposal = proposalResult.rows[0];
+  //   const proposal = proposalResult.rows[0];
 
-    if (!proposal) {
-        throw new Error("Proposal not found");
-    }
-    if (proposal.clientId !== user.id) {
-      throw new Error(" Unauthorized: You can only accept proposals for your own jobs");
-    }
-    await client.query(
-      `UPDATE proposals SET status = 'rejected' WHERE id = $1`,
-      [proposalId]
-    );
-    await client.query("COMMIT");
-    const return_result=await client.query(`Select * from proposals where id=$1`,[proposalId]);
-    return return_result.rows[0];
+  //   if (!proposal) {
+  //       throw new Error("Proposal not found");
+  //   }
+  //   if (proposal.clientId !== user.id) {
+  //     throw new Error(" Unauthorized: You can only accept proposals for your own jobs");
+  //   }
+  //   await client.query(
+  //     `UPDATE proposals SET status = 'rejected' WHERE id = $1`,
+  //     [proposalId]
+  //   );
+  //   await client.query("COMMIT");
+  //   const return_result=await client.query(`Select * from proposals where id=$1`,[proposalId]);
+  //   return return_result.rows[0];
 
-    }
-    catch(error){
-      await client.query("ROLLBACK"); 
-      console.error(" Error in upadte status:", error);
-      throw new Error("Failed to reject the proposal");
-    }
-    finally {
-      client.release(); 
-    }
-  },
+  //   }
+  //   catch(error){
+  //     await client.query("ROLLBACK"); 
+  //     console.error(" Error in upadte status:", error);
+  //     throw new Error("Failed to reject the proposal");
+  //   }
+  //   finally {
+  //     client.release(); 
+  //   }
+  // },
   
   updateProjectStatus: async (_, { projectId, status }, { user }) => {
     //  Authentication: Ensure user is logged in

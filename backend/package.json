@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@graphql-tools/merge": "^9.0.24",
     "apollo-server-express": "^3.13.0",
     "axios": "^1.8.3",
     "bcryptjs": "^3.0.2",

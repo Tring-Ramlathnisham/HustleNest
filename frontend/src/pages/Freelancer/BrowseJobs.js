@@ -29,7 +29,9 @@ const BrowseJobs = () => {
   console.log("Jobs:",data);
 
   if (loading) return <p>Loading jobs...</p>;
-  if (error) return <p>Error loading jobs</p>;
+  if (error) {
+    console.error("Error:",error);
+    return <p>Error loading jobs</p>;}
 
   // Get unique domains for filter dropdown
   const uniqueDomains = [

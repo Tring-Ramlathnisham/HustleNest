@@ -1,38 +1,25 @@
 import express from "express";
+import {mergeTypeDefs,mergeResolvers} from '@graphql-tools/merge'
 import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
-import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
-import typeDefs from "./graphql/typeDefs.js";
-import resolvers from "./graphql/resolvers.js";
+import userTypeDef from "./graphql/User/userTypeDefs.js";
+import userResolvers from "./graphql/User/userResolvers.js";
+import clientResolvers from "./graphql/Client/clientResolvers.js";
+import clientTypeDefs from "./graphql/Client/clientTypeDefs.js";
+import freelancerResolvers from "./graphql/Freelancer/freelancerResolvers.js";
+import freelancerTypeDefs from "./graphql/Freelancer/freelancerTypeDefs.js";
+import createContext from "./Middleware/Auth.js";
+
+
 
 dotenv.config();
 
 const app = express();
-app.use(cors({origin:"http://localhost:3000",credentials:true}));
+app.use(cors()); //{origin:"http://localhost:3000",credentials:true}
 
-const createContext = ({ req }) => {
-  try {
-    const authHeader = req.headers.authorization || "";
-    
-    if (!authHeader.startsWith("Bearer ")) {
-      return { user: null }; 
-    }
 
-    const token = authHeader.split(" ")[1];
-
-    if (!token) {
-      return { user: null }; 
-    }
-
-    //  Verify token
-    const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-    return { user: decodedUser };
-  } catch (error) {
-    console.error(" Token Verification Failed:", error.message);
-    return { user: null }; 
-  }
-};
+const typeDefs=mergeTypeDefs([userTypeDef,clientTypeDefs,freelancerTypeDefs]);
+const resolvers=mergeResolvers([userResolvers,clientResolvers,freelancerResolvers]);
 
 const server = new ApolloServer({
   typeDefs,

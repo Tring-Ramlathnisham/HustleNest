@@ -2,20 +2,21 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { login } from "../../context/authSlice";
 import styles from "./Auth.module.css";
+import LOGIN_MUTATION from "../../api/Auth/login";
 
-const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      id
-      role
-      email
-      token
-    }
-  }
-`;
+// const LOGIN_MUTATION = gql`
+//   mutation Login($email: String!, $password: String!) {
+//     login(email: $email, password: $password) {
+//       id
+//       role
+//       email
+//       token
+//     }
+//   }
+// `;
 
 const Login = () => {
   const dispatch = useDispatch();
