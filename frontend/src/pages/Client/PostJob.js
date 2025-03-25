@@ -1,36 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import styles from "./PostJob.module.css";
 import { useNavigate } from "react-router-dom";
-
-// 🔹 GraphQL Mutation for Posting a Job
-const POST_JOB_MUTATION = gql`
-  mutation PostJob($title: String!, $description: String!, $budget: Float!, $domain: String!) {
-    postJob(title: $title, description: $description, budget: $budget, domain: $domain) {
-      id
-      title
-      description
-      budget
-      domain
-    }
-  }
-`;
-const GET_CLIENT_STATS = gql`
-  query GetClientDashboardStats($clientId: ID!) {
-    getClientDashboardStats(clientId: $clientId) {
-      totalJobs
-      totalProposals
-      activeProjects
-      jobs {
-        id
-        title
-        proposalCount
-      }
-    }
-  }
-`;
+import POST_JOB_MUTATION from "../../api/client/postJobMutation.js";
+import GET_CLIENT_STATS from "../../api/client/getClientStats.js";
 
 const PostJob = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -46,10 +21,6 @@ const PostJob = () => {
 
 
   const onSubmit = async (formData) => {
-    // if (role !== "client") {
-    //   alert("Only clients can post jobs!");
-    //   return;
-    // }
     try {
       await postJob({
         variables: { 

@@ -1,11 +1,11 @@
 import {pool} from "../../config/database.js";
-import { fetchJobById,fetchUserById } from "../../Helper/fetchHelper.js";
-import verifyRole from "../../Middleware/verifyRole.js";
+import { fetchJobById,fetchUserById } from "../../helper/fetchHelper.js";
+import verifyRole from "../../middleware/verifyRole.js";
 
 const freelancerResolvers={
     Query:{
         jobs: async (_,__,{user}) => {
-          verifyRole(user,'freelancer');
+          await verifyRole(user,'freelancer');
           
             const result = await pool.query("SELECT * FROM jobs where status='open'");
             return result.rows;
@@ -30,7 +30,7 @@ const freelancerResolvers={
           
         },
         getAppliedJobs: async (_, { freelancerId },{user}) => {
-          verifyRole(user,'freelancer');
+           await verifyRole(user,'freelancer');
             try {
               // console.log("Fetching applied jobs for freelancerId:", freelancerId);
           
@@ -76,7 +76,7 @@ const freelancerResolvers={
             }
           },
           getAcceptedProjects: async (_, { freelancerId },{user}) => {
-            verifyRole(user,'freelancer');
+            await verifyRole(user,'freelancer');
             try {
               //console.log("Fetching accepted projects for freelancerId:", freelancerId);
           
@@ -116,7 +116,7 @@ const freelancerResolvers={
     },
     Mutation:{
         applyJob: async (_, { jobId, coverLetter, proposedBudget }, { user }) => {
-            verifyRole(user,'freelancer');
+            await verifyRole(user,'freelancer');
             try {
                 const result = await pool.query(
                     `INSERT INTO proposals ("jobId", "freelancerId", "coverLetter", "proposedBudget", status, "submittedAt") 

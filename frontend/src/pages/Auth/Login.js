@@ -5,18 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { login } from "../../context/authSlice";
 import styles from "./Auth.module.css";
-import LOGIN_MUTATION from "../../api/Auth/login";
-
-// const LOGIN_MUTATION = gql`
-//   mutation Login($email: String!, $password: String!) {
-//     login(email: $email, password: $password) {
-//       id
-//       role
-//       email
-//       token
-//     }
-//   }
-// `;
+import LOGIN_MUTATION from "../../api/auth/login";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -34,15 +23,14 @@ const Login = () => {
       const { id, role, email, token } = data.login;
       console.log(" Login Successful:", { id, email, role, token });
 
-      // 🔹 Store token & user details in Redux
       dispatch(login({ user: { id, email }, token, role }));
 
-      // 🔹 Redirect based on role
+      //Redirect based on role
       navigate(role === "client" ? "/client/dashboard" : "/freelancer/dashboard");
     },
   });
 
-  // 🔹 Form submission handler
+
   const onSubmit = async (formData) => {
     try {
       await loginMutation({ variables: {

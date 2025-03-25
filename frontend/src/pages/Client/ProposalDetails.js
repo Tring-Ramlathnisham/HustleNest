@@ -1,45 +1,11 @@
 import React from "react";
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery,useMutation } from "@apollo/client";
 import { useParams} from "react-router-dom";
-import ProposalActions from "../../components/ProposalActions"; // ✅ Import reusable component
+import ProposalActions from "../../components/ProposalActions"; 
 import styles from "./ProposalDetails.module.css";
-
-const GET_PROPOSAL_DETAILS = gql`
-  query getProposal($proposalId: ID!) {
-    proposal(proposalId: $proposalId) {
-      id  
-      freelancer {
-        name
-        email
-      }
-      coverLetter
-      proposedBudget
-      status  
-    }
-  }
-`;
-
-const REJECT_JOB_PROPOSALS = gql`
-  mutation RejectProposal($proposalId: ID!) {
-    rejectProposal(proposalId: $proposalId) {
-      job{
-      id
-      }  
-      status  
-    }
-  }
-`;
-
-const ACCEPT_JOB_PROPOSALS = gql`
-  mutation AcceptProposal($proposalId: ID!) {
-    acceptProposal(proposalId: $proposalId) {
-    job{
-      id
-    } 
-      status
-    }
-  }
-`;
+import GET_PROPOSAL_DETAILS from "../../api/client/getProposalDetails";
+import ACCEPT_JOB_PROPOSALS from "../../api/client/acceptJobProposal";
+import REJECT_JOB_PROPOSALS from "../../api/client/rejectJobProposal";
 
 const ProposalDetails = () => {
   const { proposalId } = useParams();
@@ -48,7 +14,7 @@ const ProposalDetails = () => {
     variables: { proposalId },
     fetchPolicy: "network-only",
   });
-
+  console.log("Proposal Details data:",data);
   const [acceptProposal] = useMutation(ACCEPT_JOB_PROPOSALS, {
     variables: { proposalId },
     refetchQueries: [{ query: GET_PROPOSAL_DETAILS, variables: { proposalId } }],

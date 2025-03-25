@@ -1,10 +1,9 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
+import { gql ,useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
 //import { GET_ACCEPTED_PROJECTS } from "../../graphql/queries"; 
 import styles from "./Applications.module.css"; 
 
-import { gql } from "@apollo/client";
 
 export const GET_ACCEPTED_PROJECTS = gql`
   query GetAcceptedProjects($freelancerId: ID!) {

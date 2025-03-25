@@ -1,25 +1,10 @@
 import React from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styles from "./Applications.module.css";
+import GET_APPLIED_JOBS from "../../api/freelancer/getAppliedJobs";
 
-// 🔹 GraphQL Query to Fetch Applied Jobs for Freelancer
-const GET_APPLIED_JOBS = gql`
-  query GetAppliedJobs($freelancerId: ID!) {
-    getAppliedJobs(freelancerId: $freelancerId) {
-      id
-
-      job {
-        id
-        title
-        domain
-      }
-      clientName
-      status
-    }
-  }
-`;
 
 const Applications = () => {
   const navigate=useNavigate();

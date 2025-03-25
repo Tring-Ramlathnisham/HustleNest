@@ -1,43 +1,30 @@
 import React from "react";
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { useParams, useNavigate } from "react-router-dom";
 import ProposalActions from "../../components/ProposalActions"; 
 import styles from "./ManageProposals.module.css";
+import GET_JOB_PROPOSALS from "../../api/client/getJobProposals";
+import ACCEPT_JOB_PROPOSALS from "../../api/client/acceptJobProposal";
 
-const GET_JOB_PROPOSALS = gql`
-  query Proposals($jobId: ID!) {
-    proposals(jobId: $jobId) {
-      id
-      freelancer {
-        name
-      }
-      proposedBudget
-      status
-    }
-  }
-`;
-
-const ACCEPT_JOB_PROPOSALS = gql`
-  mutation AcceptProposal($proposalId: ID!) {
-    acceptProposal(proposalId: $proposalId) {
-      job{
-      id
-      }
-      status
-    }
-  }
-`;
 
 const ManageProposals = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();
   const { data, loading, error } = useQuery(GET_JOB_PROPOSALS, {
     variables: { jobId },
+    fetchPolicy:"network-only",
   });
 
   const [acceptProposal] = useMutation(ACCEPT_JOB_PROPOSALS, {
-    refetchQueries: [{ query: GET_JOB_PROPOSALS, variables: { jobId } ,fetchPolicy:"network-only",}],
+    refetchQueries: [
+      {
+        query: GET_JOB_PROPOSALS,
+        variables: { jobId },
+      },
+    ],
   });
+  
+
 
 
   if (loading) return <p>Loading proposals...</p>;

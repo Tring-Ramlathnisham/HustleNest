@@ -1,21 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
+import GET_CLIENT_JOBS from "../../api/client/getClientJobs";
 import styles from "./JobList.module.css";
 
-
-const GET_CLIENT_JOBS = gql`
-  query GetClientJobs($clientId: ID!) {
-    getClientDashboardStats(clientId: $clientId) {
-      jobs {
-        id
-        title
-        proposalCount
-      }
-    }
-  }
-`;
 
 const JobList = () => {
   const user = useSelector((state) => state.auth?.user);

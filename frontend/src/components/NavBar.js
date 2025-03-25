@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
-import logo from "../Assets/Logo1.png";
+import logo from "../assets/Logo1.png";
 
 const Navbar = ({ isLoggedIn, userRole, handleLogout }) => {
   return (

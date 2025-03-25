@@ -1,22 +1,9 @@
 import React, { useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import styles from "./BrowseJobs.module.css";
+import GET_ALL_JOBS from "../../api/freelancer/getAllJobs";
 
-const GET_ALL_JOBS = gql`
-  query GetAllJobs {
-    jobs {
-      id
-      title
-      description
-      domain
-      budget
-      client {
-        name
-      }
-    }
-  }
-`;
 
 const BrowseJobs = () => {
   const navigate = useNavigate();

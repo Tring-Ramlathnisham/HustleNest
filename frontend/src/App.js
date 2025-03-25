@@ -2,21 +2,21 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import {logout} from "./context/authSlice";
-import Login from "./pages/Auth/Login";
-import Home from "./pages/Common/Home";
-import Register from "./pages/Auth/Register";
-import ClientDashboard from "./pages/Client/Dashboard";
-import FreelancerDashboard from "./pages/Freelancer/Dashboard";
+import Login from "./pages/auth/Login";
+import Home from "./pages/common/Home";
+import Register from "./pages/auth/Register";
+import ClientDashboard from "./pages/client/Dashboard";
+import FreelancerDashboard from "./pages/freelancer/Dashboard";
 import PrivateRoute from "./routes/PrivateRoute";
 import NavBar from "./components/NavBar"; 
-import PostJob from "./pages/Client/PostJob";
-import ManageProposals from "./pages/Client/ManageProposals";
-import ProposalDetails from "./pages/Client/ProposalDetails";
-import JobList from "./pages/Client/JobList";
-import BrowseJobs from "./pages/Freelancer/BrowseJobs";
-import ApplyJob from "./pages/Freelancer/ApplyJob";
-import Applications from "./pages/Freelancer/Applications";
-import Projects from "./pages/Freelancer/Projects";
+import PostJob from "./pages/client/PostJob";
+import ManageProposals from "./pages/client/ManageProposals";
+import ProposalDetails from "./pages/client/ProposalDetails";
+import JobList from "./pages/client/JobList";
+import BrowseJobs from "./pages/freelancer/BrowseJobs";
+import ApplyJob from "./pages/freelancer/ApplyJob";
+import Applications from "./pages/freelancer/Applications";
+import Projects from "./pages/freelancer/Projects";
 
 const App = () => {
 

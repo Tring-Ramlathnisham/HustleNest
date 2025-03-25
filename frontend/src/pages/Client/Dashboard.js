@@ -1,27 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
-
+import GET_CLIENT_STATS from "../../api/client/getClientStats";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const GET_CLIENT_STATS = gql`
-  query GetClientDashboardStats($clientId: ID!) {
-    getClientDashboardStats(clientId: $clientId) {
-      totalJobs
-      totalProposals
-      activeProjects
-      jobs {
-        id
-        title
-        proposalCount
-      }
-    }
-  }
-`;
+
 
 const ClientDashboard = () => {
   const user = useSelector((state) => state.auth?.user);
@@ -62,8 +49,6 @@ const ClientDashboard = () => {
 
   return (
     <div className={styles.dashboardPage}>
-      {/* Greeting Message */}
-      {/* <h2 className={styles.greeting}>Hello, {userName} </h2> */}
 
       {/* Main Container */}
       <div className={styles.dashboardContainer}>
@@ -95,7 +80,7 @@ const ClientDashboard = () => {
         <div className={styles.quickActions}>
           <button onClick={() => navigate("/client/postJob")} className={styles.actionBtn}>Post a Job</button>
           <button onClick={() => navigate("/client/jobs")} className={styles.actionBtn}>View All Jobs</button>
-          <button onClick={() => navigate("/client/jobs")} className={styles.actionBtn}>Manage Proposals</button>
+          {/*<button onClick={() => navigate("/client/jobs")} className={styles.actionBtn}>Manage Proposals</button>*/}
         </div>
       </div>
     </div>

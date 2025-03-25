@@ -48,8 +48,7 @@ const FreelancerDashboard = () => {
   if (loading) return <p>Loading stats...</p>;
   if (error) return <p>Error loading stats: {error.message}</p>;
 
-  const { totalJobsApplied, totalProposalsPending, totalProjectsAccepted } =
-    data?.getFreelancerDashboardStats || {};
+  const { totalJobsApplied, totalProposalsPending, totalProjectsAccepted } = data?.getFreelancerDashboardStats || {};
 
   return (
     <div className={styles.dashboardContainer}>
@@ -79,15 +78,15 @@ const FreelancerDashboard = () => {
       {data?.getFreelancerDashboardStats && (
         <div className={styles.statsContainer}>
           <div className={styles.statCard}>
-            <h2>{data.getFreelancerDashboardStats.totalJobsApplied}</h2> 
+            <h2>{totalJobsApplied}</h2> 
             <p>Jobs Applied</p>
           </div>
           <div className={styles.statCard}>
-            <h2>{data.getFreelancerDashboardStats.totalProposalsPending}</h2>
+            <h2>{totalProposalsPending}</h2>
             <p>Proposals Pending</p>
           </div>
           <div className={styles.statCard}>
-            <h2>{data.getFreelancerDashboardStats.totalProjectsAccepted}</h2>
+            <h2>{totalProjectsAccepted}</h2>
             <p>Projects Accepted</p>
           </div>
         </div>
