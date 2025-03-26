@@ -23,6 +23,20 @@ const ManageProposals = () => {
       },
     ],
   });
+
+  const handleAcceptProposal=async(event,proposalId)=>{
+    event.preventDefault();
+    if(window.confirm("Are you sure you want to accept this proposal?")){
+      try{
+        await acceptProposal({variables:{proposalId:proposalId}});
+        alert("Proposal accepted successfully!");
+      }
+      catch(error){
+        console.error("Proposal acceptance error:",error);
+      }
+    }
+
+  }
   
 
 
@@ -46,7 +60,8 @@ const ManageProposals = () => {
                 <ProposalActions
                   proposalId={proposal.id}
                   status={proposal.status}
-                  onAccept={() => acceptProposal({ variables: { proposalId: proposal.id } })}
+               //   onAccept={(event) => acceptProposal({ variables: { proposalId: proposal.id } })}
+                  onAccept={(event)=>handleAcceptProposal(event,proposal.id)}
                   showReject={false}
                 />
               </li>

@@ -12,8 +12,7 @@ import createContext from "./Middleware/auth.js";
 
 
 const app = express();
-app.use(cors()); //{origin:"http://localhost:3000",credentials:true}
-
+app.use(cors({origin:process.env.URL,credentials:true})); 
 
 const typeDefs=mergeTypeDefs([userTypeDef,clientTypeDefs,freelancerTypeDefs]);
 const resolvers=mergeResolvers([userResolvers,clientResolvers,freelancerResolvers]);

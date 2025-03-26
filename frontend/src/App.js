@@ -135,8 +135,6 @@ const App = () => {
             </PrivateRoute>
           }
          />
-
-
       </Routes>
     </>
   );

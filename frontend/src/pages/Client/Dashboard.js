@@ -13,7 +13,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const ClientDashboard = () => {
   const user = useSelector((state) => state.auth?.user);
   const clientId = user?.id || null;
-  // const userName = user?.name;
   const navigate = useNavigate();
 
   const { data, loading, error } = useQuery(GET_CLIENT_STATS, {
@@ -79,8 +78,7 @@ const ClientDashboard = () => {
         {/* Quick Action Buttons */}
         <div className={styles.quickActions}>
           <button onClick={() => navigate("/client/postJob")} className={styles.actionBtn}>Post a Job</button>
-          <button onClick={() => navigate("/client/jobs")} className={styles.actionBtn}>View All Jobs</button>
-          {/*<button onClick={() => navigate("/client/jobs")} className={styles.actionBtn}>Manage Proposals</button>*/}
+          <button onClick={() => navigate("/client/jobs")} className={styles.actionBtn}>Manage Proposals</button>
         </div>
       </div>
     </div>

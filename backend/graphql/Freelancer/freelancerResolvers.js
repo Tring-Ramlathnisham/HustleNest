@@ -32,7 +32,6 @@ const freelancerResolvers={
         getAppliedJobs: async (_, { freelancerId },{user}) => {
            await verifyRole(user,'freelancer');
             try {
-              // console.log("Fetching applied jobs for freelancerId:", freelancerId);
           
               if (!freelancerId) {
                 throw new Error("Freelancer ID is missing");
@@ -50,9 +49,7 @@ const freelancerResolvers={
                 JOIN users u ON u.id = j."clientId"
                 WHERE p."freelancerId" = $1;
               `, [freelancerId]);
-          
-              // console.log("DB Result:", getAppliedJobs.rows);
-          
+              
               // If no applied jobs found, return an empty array
               if (getAppliedJobs.rows.length === 0) {
                 console.log("No applied jobs found for this freelancer.");
@@ -78,7 +75,6 @@ const freelancerResolvers={
           getAcceptedProjects: async (_, { freelancerId },{user}) => {
             await verifyRole(user,'freelancer');
             try {
-              //console.log("Fetching accepted projects for freelancerId:", freelancerId);
           
               if (!freelancerId) {
                 throw new Error("Freelancer ID is missing");
@@ -96,7 +92,6 @@ const freelancerResolvers={
                 WHERE p."freelancerId" = $1 AND p.status = 'accepted';
               `, [freelancerId]);
           
-             // console.log("DB Result:", acceptedProjects.rows);
           
               return acceptedProjects.rows.map(row => ({
                 id: row.jobId,

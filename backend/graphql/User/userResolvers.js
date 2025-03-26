@@ -14,7 +14,7 @@ const userResolvers={
           );
     
           const user = result.rows[0];
-          const token = jwt.sign({ id: user.id,role:user.role,email:user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
+          const token = jwt.sign({ id: user.id,role:user.role,email:user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
     
           return { ...user, token };
         }
@@ -22,19 +22,19 @@ const userResolvers={
           throw new Error('Already Have an account with this email..');
         }
         },
-        
-              login: async (_, { email, password }) => {
-                const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-                const user = result.rows[0];
-        
-                if (!user || !(await bcrypt.compare(password, user.password))) {
-                throw new Error("Invalid credentials");
-                }
-        
-                const token = jwt.sign({ id: user.id, role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
-        
-                return { ...user, token };
-            },
+  
+        login: async (_, { email, password }) => {
+          const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+          const user = result.rows[0];
+  
+          if (!user || !(await bcrypt.compare(password, user.password))) {
+          throw new Error("Invalid credentials");
+          }
+  
+          const token = jwt.sign({ id: user.id, role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  
+          return { ...user, token };
+      },
             
     }
 }

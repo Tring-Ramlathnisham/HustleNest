@@ -14,25 +14,20 @@ const clientResolvers={
                 console.error("unable to fetch proposals:", error);
                 throw new Error("Internal Server Error while fetching proposals");
             }
-        },
+          },
     
-        getClientDashboardStats:async(_,{clientId})=>{
+          getClientDashboardStats:async(_,{clientId})=>{
         
                 try{
-                  //console.log("fetching client id in resolver:",clientId);
                 const totalJobs=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"= $1`,[clientId]);
-        
-               // console.log("Total jobs:",totalJobs.rows[0]);
                 const totalProposals=await pool.query(`SELECT COUNT(*) FROM proposals WHERE "jobId" IN (SELECT id FROM jobs WHERE "clientId"=$1)`,[clientId]);
-               // console.log("Total proposals:",totalProposals.rows[0]);
                 const activeProjects=await pool.query(`SELECT COUNT(*) FROM jobs WHERE "clientId"=$1 AND status='in progress'`,[clientId]); 
-                //console.log("Active projects:",activeProjects.rows[0]);
+
                 const jobs=await pool.query(
                   `SELECT j.id,j.title,(SELECT COUNT(*) FROM proposals p WHERE p."jobId"=j.id) AS "proposalCount"
                    FROM jobs j
                    WHERE j."clientId"=$1`,
                    [clientId]
-                 //Select id,title from jobs where "clientId"=$1`,[clientId] 
                    
                 );
              
@@ -47,33 +42,32 @@ const clientResolvers={
                 console.error("Error fetching client dashboard stats:",error);
                 throw new Error("Failed to fetch client dashboard stats");
               }
-        },
-         proposal:async(_,{proposalId},{user})=>{
-          console.log("proposal details:",proposalId);
-          await verifyRole(user,'client');
-                try {
-                  const proposalQuery=`Select * from proposals where id=$1`;
-                  const  result = await pool.query(proposalQuery, [proposalId]);
-          
-                  if (result.rows.length === 0) {
-                    throw new Error("Proposal not found");
-                  }
-          
-                  return result.rows[0];
-                 
-                } catch (error) {
-                  console.error(error);
-                  throw new Error("Failed to fetch proposal details");
+          },
+           proposal:async(_,{proposalId},{user})=>{
+              await verifyRole(user,'client');
+              try {
+                const proposalQuery=`Select * from proposals where id=$1`;
+                const  result = await pool.query(proposalQuery, [proposalId]);
+        
+                if (result.rows.length === 0) {
+                  throw new Error("Proposal not found");
                 }
+        
+                return result.rows[0];
+              
+              } catch (error) {
+                console.error(error);
+                throw new Error("Failed to fetch proposal details");
+              }
+            },
         },
-    },
     Mutation:{
         postJob: async (_, { title, description, budget, domain }, { user }) => {
-          await verifyRole(user,'client');
+              await verifyRole(user,'client');
               
-                const client = await pool.connect(); // Get a client connection
+                const client = await pool.connect(); 
                 try {
-                  await client.query("BEGIN"); // Start transaction
+                  await client.query("BEGIN");
               
                   const result = await client.query(
                     `INSERT INTO jobs ("clientId", title, description, budget, domain) 
@@ -81,13 +75,13 @@ const clientResolvers={
                     [user.id, title, description, budget, domain]
                   );
               
-                  await client.query("COMMIT"); // Commit transaction
+                  await client.query("COMMIT"); 
                   return result.rows[0];
                 } catch (error) {
-                  await client.query("ROLLBACK"); // Rollback transaction on error
+                  await client.query("ROLLBACK"); 
                   throw new Error("Failed to post job: " + error.message);
                 } finally {
-                  client.release(); // Release client connection
+                  client.release(); 
                 }
         },
         acceptProposal: async (_, { proposalId }, { user }) => {
@@ -109,7 +103,6 @@ const clientResolvers={
                   throw new Error("This job is already assigned to someone else.");
                 }
             
-                // Fetch proposal and job details
                 const proposalResult = await client.query(
                   `SELECT p.*, j."clientId" 
                    FROM proposals p
@@ -145,13 +138,11 @@ const clientResolvers={
                   [proposal.jobId]
                 );
             
-                // Ensure freelancerId is not null before inserting into projects
                 if (!proposal.freelancerId) {
                   await client.query("ROLLBACK");
                   throw new Error("Proposal is missing freelancer information.");
                 }
             
-                // Insert into projects
                 const projectResult = await client.query(
                   `INSERT INTO projects ("jobId", "freelancerId", "clientId", "status", "deadline") 
                    VALUES ($1, $2, $3, 'in progress', NOW() + INTERVAL '30 days') 

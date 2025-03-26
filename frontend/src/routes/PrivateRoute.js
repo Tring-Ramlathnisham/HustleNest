@@ -6,9 +6,9 @@ const PrivateRoute = ({ role, userRole, token, children }) => {
     return <Navigate to="/login" />;
   }
 
-  // ✅ Check if the user has the correct role
+  // Check if the user has the correct role
   if (role && userRole !== role) {
-    return <Navigate to="/" />; // Redirect to Home if role mismatch
+    return <Navigate to="/" />; 
   }
 
   return children;

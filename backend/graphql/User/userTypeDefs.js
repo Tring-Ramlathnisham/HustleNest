@@ -8,20 +8,7 @@ const userTypeDef = gql`
     role: String!
     token: String
   }
-
-  input RegisterInput {
-    name: String!
-    email: String!
-    password: String!
-    role: String!
-  }
-
-  input LoginInput {
-    email: String!
-    password: String!
-  }
-
-
+    
   type Mutation {
     register(name:String!,email:String!,password:String!,role:String!): User
     login(email:String!,password:String!):User

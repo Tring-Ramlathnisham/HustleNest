@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client"; // Import useMutation
+import { useMutation } from "@apollo/client"; 
 import { register } from "../../context/authSlice";
 import styles from "./Auth.module.css"; 
 import REGISTER_MUTATION from "../../api/auth/register";
