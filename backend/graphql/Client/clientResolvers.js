@@ -61,7 +61,7 @@ const clientResolvers={
               }
             },
         },
-    Mutation:{
+      Mutation:{
         postJob: async (_, { title, description, budget, domain }, { user }) => {
               await verifyRole(user,'client');
               
@@ -94,8 +94,12 @@ const clientResolvers={
             
                 // Check if the job is already assigned
                 const alreadyAccepted = await client.query(
-                  `SELECT * FROM projects WHERE "jobId" = (SELECT "jobId" FROM proposals WHERE id = $1)`,
-                  [proposalId]
+                  // `SELECT * FROM projects WHERE "jobId" = (SELECT "jobId" FROM proposals WHERE id = $1)`,
+                  // [proposalId]
+                  `SELECT 1 FROM projects p
+                   JOIN proposals pr 
+                   ON p."jobId"=pr."jobId"
+                   WHERE pr.id=$1`,[proposalId]
                 );
             
                 if (alreadyAccepted.rows.length > 0) {
@@ -107,8 +111,8 @@ const clientResolvers={
                   `SELECT p.*, j."clientId" 
                    FROM proposals p
                    JOIN jobs j ON p."jobId" = j.id
-                   WHERE p.id = $1`,
-                  [proposalId]
+                   WHERE p.id = $1 and j."clientId"= $2`,
+                  [proposalId,user.id]
                 );
             
                 const proposal = proposalResult.rows[0];
@@ -202,22 +206,22 @@ const clientResolvers={
               client.release(); 
             }
           },
-    },
-     Proposal:{
-        job:(parent)=>fetchJobById(parent.jobId),
-        freelancer:(parent)=>fetchUserById(parent.freelancerId),
-    },
-    Project:{
-        job:(parent)=>fetchJobById(parent.jobId),
-        freelancer:(parent)=>fetchUserById(parent.freelancerId),
-    },
-    Job:{
-        proposalCount:async(parent)=>{
-        const result=await pool.query(`Select Count(*) from proposals where "jobId"=$1`,[parent.id]);
-        return parseInt(result.rows[0].count,10);
         },
-        client:(parent)=>fetchUserById(parent.clientId),
-    },
+      Proposal:{
+          job:(parent)=>fetchJobById(parent.jobId),
+          freelancer:(parent)=>fetchUserById(parent.freelancerId),
+      },
+      Project:{
+          job:(parent)=>fetchJobById(parent.jobId),
+          freelancer:(parent)=>fetchUserById(parent.freelancerId),
+      },
+      Job:{
+          proposalCount:async(parent)=>{
+          const result=await pool.query(`Select Count(*) from proposals where "jobId"=$1`,[parent.id]);
+          return parseInt(result.rows[0].count,10);
+          },
+          client:(parent)=>fetchUserById(parent.clientId),
+      },
 }
 
 export default clientResolvers;

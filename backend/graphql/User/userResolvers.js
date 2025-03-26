@@ -26,8 +26,12 @@ const userResolvers={
         login: async (_, { email, password }) => {
           const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
           const user = result.rows[0];
+
+          if (!user ) {
+            throw new Error("You are not registered yet");
+            }
   
-          if (!user || !(await bcrypt.compare(password, user.password))) {
+          if (!(await bcrypt.compare(password, user.password))) {
           throw new Error("Invalid credentials");
           }
   

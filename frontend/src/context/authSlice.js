@@ -16,7 +16,6 @@ const authSlice = createSlice({
       state.token = token;
       state.role = role;
 
-      //store in localstorage
       localStorage.setItem("user",JSON.stringify(user));
       localStorage.setItem("token",token);
       localStorage.setItem("role",role);
@@ -30,7 +29,6 @@ const authSlice = createSlice({
       state.token = token;
       state.role = role;
 
-      //store in localstorage
       localStorage.setItem("user",JSON.stringify(user));
       localStorage.setItem("token",token);
       localStorage.setItem("role",role);
@@ -42,7 +40,6 @@ const authSlice = createSlice({
       state.token = null;
       state.role = null;
 
-      //clear from local storage
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       localStorage.removeItem("role");

@@ -64,7 +64,7 @@ const Register = () => {
             placeholder="Email" 
             {...formRegister("email", { 
               required: "Email is required", 
-              pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email format" }
+              pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "Invalid email format" }
             })} 
           />
           {errors.email && <p className={styles.errorMessage}>{errors.email.message}</p>}

@@ -13,12 +13,12 @@ const ProposalActions = ({ proposalId, status, onAccept, onReject, showReject = 
       <button
         className={`${styles.button} ${styles.acceptBtn}`}
         onClick={(event) => onAccept(event, proposalId)}
-        disabled={isAccepted || isRejected} //  Disable if already accepted or rejected
+        disabled={isAccepted || isRejected} 
       >
         {isAccepted ? "Accepted" : "Accept"}
       </button>
 
-      {/* Reject Button (Only if showReject is true) */}
+      {/* Reject Button */}
       {showReject && (
         <button
           className={`${styles.button} ${styles.rejectBtn}`}

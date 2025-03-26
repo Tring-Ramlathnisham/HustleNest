@@ -46,14 +46,6 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route
-          path="/freelancer/dashboard"
-          element={
-            <PrivateRoute role="freelancer" userRole={userRole} token={token}>
-              <FreelancerDashboard />
-            </PrivateRoute>
-          }
-        />
 
         <Route
           path="/client/postJob"
@@ -93,6 +85,15 @@ const App = () => {
         />
 
       {/* Freelancer routes*/}
+
+      <Route
+          path="/freelancer/dashboard"
+          element={
+            <PrivateRoute role="freelancer" userRole={userRole} token={token}>
+              <FreelancerDashboard />
+            </PrivateRoute>
+          }
+        />
 
         <Route
           path="/freelancer/jobs"
